@@ -7,15 +7,16 @@
  1. pip list --outdated で古くなっちゃったのが確認できる
  1. black, flake8, isort はそれぞれ独立して実行可能
 
+## Azure
+ 1. Guthubからデプロイ設定したあと、sshで入って pip install -r requirements.txt, manage.py createsuperuserする
+
 ## わかっている制限
  1. 静止画はjpg,png 動画はmp4,webm,oggだけのサポート(それ以外のファイルも登録はできるけどあえて再生時に処理しないようにしている)
  1. ローカルで動くツールでサポートしていた「単語」の表示機能は今のところない
  1. ブラウザはHTML5のモダンブラウザでJavaScriptが有効になっていないとだめ
 
 ## 本番化にむけて
- 1. いろいろ環境変数に
  1. STATICファイルの扱いを確認
- 1. requirements.txtつくる
  1. SECRET_KEYの処理,manage.pyでのセキュリティチェックを実施する
  1. 緊急用のユーザとチームメンバー公開用のユーザの２つを作成する
  1. DBのバックアップとリストアを用意する

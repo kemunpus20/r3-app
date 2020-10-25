@@ -22,7 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", r"pqd!5-g4+=#*d369a$dlyje(^v%78ad9rrmk!h-a*t*pf!h3k)")
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY", r"pqd!5-g4+=#*d369a$dlyje(^v%78ad9rrmk!h-a*t*pf!h3k)"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -82,7 +84,11 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-    }
+    },
+    "alt": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "alt.sqlite3",
+    },
 }
 
 # Password validation
