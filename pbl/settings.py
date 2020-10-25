@@ -23,14 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY = os.getenv(
-    "DJANGO_SECRET_KEY", r"pqd!5-g4+=#*d369a$dlyje(^v%78ad9rrmk!h-a*t*pf!h3k)"
+    "SECRET_KEY", r"pqd!5-g4+=#*d369a$dlyje(^v%78ad9rrmk!h-a*t*pf!h3k)"
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = os.getenv("DJANGO_DEBUG", "True")
+DEBUG = os.getenv("DEBUG", "True")
 
-if DEBUG is True:
+if DEBUG == "True":
     ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = ["localhost", "r3-app.azurewebsites.net"]
@@ -84,7 +84,7 @@ WSGI_APPLICATION = "pbl.wsgi.application"
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
-if DEBUG is True:
+if DEBUG == "True":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -97,7 +97,7 @@ else:
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
             "NAME": "r3",
-            "USER": "psqladmin",
+            "USER": os.getenv("DB_USER"),
             "PASSWORD": os.getenv("DB_PASSWORD"),
             "HOST": os.getenv("DB_HOST"),
             "PORT": "",
