@@ -95,12 +95,8 @@ if DEBUG is True:
 else:
     DATABASES = {
         "default": {
-            "ENGINE": "sql_server.pyodbc",
-            "NAME": "r3-rdb",
-            "USER": "r3-rdb-admin@r3-rdb"
-            "PASSWORD": os.getenv("R3_RDB_PASSWORD")
-            "HOST": "r3-rdb.database.windows.net",
-            "PORT": "",
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "/r3-share/db.sqlite3",
         }
     }
 
