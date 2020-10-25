@@ -1,0 +1,26 @@
+{% load static %}
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'common.css' %}">
+    <title>
+        R3 Player
+    </title>
+    {% block head %} {% endblock %}
+</head>
+
+<body>
+    <div class="header">
+        {% block header %} {% endblock %}
+    </div>
+    <div class="version">
+        v 0.0.1
+    </div>
+    <div class="body">
+        {% block body %} {% endblock %}
+    </div>
+</body>
+
+</html>

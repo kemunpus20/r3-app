@@ -1,0 +1,46 @@
+<!-- Base -->
+{% extends "base.html" %}
+
+<!-- Static -->
+{% load static %}
+
+<!-- Header-->
+{% block header %}
+<table class="header">
+    <tr class="header">
+        <td class="title">R3</td>
+        <td class="mark">Setup</td>
+        <td class="space">▶</td>
+        <td class="mark">Check</td>
+        <td class="space">▶</td>
+        <td class="mark">Show</td>
+        <td class="space">▶</td>
+        <td class="cursor">Finish</td>
+    </tr>
+</table>
+{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<table>
+    <tr>
+        <th>Room:</th>
+        <td class="static">{{trial.room}}</td>
+        <td class="space"></td>
+        <th>Nickname:</th>
+        <td class="static">{{trial.nickname}}</td>
+        <td class="space"></td>
+    </tr>
+</table>
+<div class="prompt">
+    {{trial.logic.finish_prompt | safe}}
+</div>
+<form method="POST">
+    <table>
+        {% csrf_token %} {{form}}
+    </table>
+    <div class="button">
+        <button type="submit">Done</button>
+    </div>
+</form>
+{% endblock %}

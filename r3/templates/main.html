@@ -1,0 +1,33 @@
+<!-- Base -->
+{% extends "base.html" %}
+
+<!-- Static -->
+{% load static %}
+
+<!-- Header-->
+{% block header %}
+<table class="header">
+    <tr class="header">
+        <td class="title">R3</td>
+        <td class="cursor">Setup</td>
+        <td class="space">▶</td>
+        <td class="mark">Check</td>
+        <td class="space">▶</td>
+        <td class="mark">Show</td>
+        <td class="space">▶</td>
+        <td class="mark">Finish</td>
+    </tr>
+</table>
+{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<form method="POST">
+    <table>
+        {% csrf_token %} {{form}}
+    </table>
+    <div class="button">
+        <button type="submit">Next</button>
+    </div>
+</form>
+{% endblock %}

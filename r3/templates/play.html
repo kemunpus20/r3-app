@@ -1,0 +1,145 @@
+<!-- Base -->
+{% extends "base.html" %}
+
+<!-- Static -->
+{% load static %}
+
+<!-- Head -->
+{% block head %}
+<script type="text/javascript">
+    const interval = Number("{{trial.logic.interval}}") * 1000
+
+    let counter = null;
+    let text = null;
+    let image = null;
+    let video = null;
+
+    let start = 0;
+    let last = 0;
+    let timer = null;
+    let seq = 0;
+
+    window.onload = () => {
+        counter = document.getElementById("counter");
+
+        text = document.getElementById("text");
+        text.style.display = "none";
+
+        image = document.getElementById("image");
+        image.style.display = "none";
+
+        image.onload = () => {
+            image.style.display = "block";
+        }
+
+        video = document.getElementById("video");
+        video.style.display = "none";
+
+        video.onloadeddata = () => {
+            video.style.display = "block";
+        }
+
+        start = new Date().getTime();
+        last = start - interval;
+        timer = setInterval(onInterval, 1000 / 2);
+
+        onInterval();
+    }
+
+    function onInterval() {
+        const now = new Date().getTime();
+
+        const diff = now - start;
+        const min = Math.floor(diff / (1000 * 60));
+        const sec = Math.floor(diff / 1000) - (min * 60);
+
+        counter.innerHTML = String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+
+        if (now >= (last + interval)) {
+            last = now;
+
+            content_url = "../content/{{trial.pk}}/" + String(seq)
+            seq++;
+
+            fetch(content_url).then((response) => {
+                text.style.display = "none";
+                image.style.display = "none";
+                video.style.display = "none";
+
+                if (response.ok) {
+                    return response.json();
+                }
+
+                text.innerHTML = "API Error : " + response.status + " (@" + seq + ")<br>may be you have to re-run prep?";
+                text.style.display = "block";
+
+            }).then((data) => {
+
+                if (data.ext == "jpg" || data.ext == "png") {
+                    image.src = data.url;
+
+                } else if (data.ext == "mp4" || data.ext == "webm" || data.ext == "ogg") {
+                    video.src = data.url;
+
+                } else if (data.ext == "txt") {
+                    text.innerHTML = data.url;
+                    text.style.display = "block";
+
+                } else {
+                    text.innerHTML = "ext [" + data.ext + "] (" + data.url + ") does not support yet.";
+                    text.style.display = "block";
+                }
+
+            }).catch((error) => {
+                console.log(`api call failed : ${content_url}`);
+            });
+        }
+    }
+</script>
+{% endblock %}
+
+<!-- Header-->
+{% block header %}
+<table class="header">
+    <tr class="header">
+        <td class="title">R3</td>
+        <td class="mark">Setup</td>
+        <td class="space">▶</td>
+        <td class="mark">Check</td>
+        <td class="space">▶</td>
+        <td class="cursor">Show</td>
+        <td class="space">▶</td>
+        <td class="mark">Finish</td>
+    </tr>
+</table>
+{% endblock %}
+
+<!-- Body -->
+{% block body %}
+<form action="../finish/{{trial.pk}}" method="GET">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <th>Room:</th>
+            <td class="static">{{trial.room}}</td>
+            <td class="space"></td>
+            <th>Nickname:</th>
+            <td class="static">{{trial.nickname}}</td>
+            <td class="space"></td>
+            <th>Time:</th>
+            <td class="static">
+                <div id="counter">00:00</div>
+            </td>
+            <td class="space"></td>
+            <td class="button">
+                <button type="submit">Finish</button>
+            </td>
+        </tr>
+    </table>
+    <div id="container" class="container">
+        <div id="text" class="content"></div>
+        <img id="image" class="content" />
+        <video id="video" class="content" onloadstart="this.volume=0.0" autoplay muted loop preload="none"></video>
+    </div>
+</form>
+{% endblock %}
