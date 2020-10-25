@@ -33,7 +33,7 @@ DEBUG = os.getenv("DEBUG", "True")
 if DEBUG == "True":
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = ["localhost", "r3-app.azurewebsites.net"]
+    ALLOWED_HOSTS = [os.getenv("ALLOWED_HOSTS")]
 
 # Application definition
 
@@ -96,11 +96,11 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": "r3",
+            "NAME": os.getenv("DB_NAME"),
             "USER": os.getenv("DB_USER"),
             "PASSWORD": os.getenv("DB_PASSWORD"),
             "HOST": os.getenv("DB_HOST"),
-            "PORT": "",
+            "PORT": os.getenv("DB_PORT"),
         }
     }
 
