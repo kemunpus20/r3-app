@@ -2,10 +2,22 @@
 たんなる自分用のメモです。
 
 ##  いろいろ
- 1. pipでインストールしたもの: django, django-import-export, django-cleanup, whitenoise, black, flake8
+ 1. pipでインストールしたもの: django, django-import-export, django-cleanup, whitenoise, django-pyodbc-azure, black, flake8
  1. ユーザでインストールしたので.profileで.local/binをPATHに追加
  1. pip list --outdated で古くなっちゃったのが確認できる
  1. black, flake8, isort はそれぞれ独立して実行可能
+ 1. gnucorn の起動 : gunicorn3 --bind 127.0.0.1:8000 pbl.wsgi
+
+
+## PostgreSQL
+ - sudo -u postgres psql
+ - CREATE DATABASE r3;
+ - CREATE USER PSQLADMIN WITH PASSWORD 'PASSWORD';
+ - ALTER ROLE PSQLADMIN SET client_encoding TO 'utf8';
+ - ALTER ROLE PSQLADMIN SET default_transaction_isolation TO 'read committed';
+ - ALTER ROLE PSQLADMIN SET timezone TO 'Asia/Tokyo';
+ - GRANT ALL PRIVILEGES ON DATABASE r3 TO PSQLADMIN;
+ - /q
 
 ## Azure
  1. Guthubからデプロイ設定したあと、sshで入って pip install -r requirements.txt, manage.py createsuperuserする
@@ -33,7 +45,4 @@
 ## いつかやる
  1. 自動Prep機能?
  1. モバイルブラウザ対応,SPA対応とか?
- 1. SQLiteをPostgreSQLに変える?
-
-## おまじない
- - pbl-admin/ikemoto-pbl-2020
+ 

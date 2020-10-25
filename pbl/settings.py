@@ -30,7 +30,10 @@ SECRET_KEY = os.getenv(
 
 DEBUG = os.getenv("DJANGO_DEBUG", "True")
 
-ALLOWED_HOSTS = ["*"]
+if DEBUG is True:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = ["localhost"]
 
 # Application definition
 
@@ -80,16 +83,26 @@ WSGI_APPLICATION = "pbl.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    },
-    "alt": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "alt.sqlite3",
-    },
-}
+
+if DEBUG is True:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "sql_server.pyodbc",
+            "NAME": "r3-rdb",
+            "USER": "r3-rdb-admin@r3-rdb"
+            "PASSWORD": os.getenv("R3_RDB_PASSWORD")
+            "HOST": "r3-rdb.database.windows.net",
+            "PORT": "",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
