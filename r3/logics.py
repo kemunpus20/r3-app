@@ -97,7 +97,9 @@ def default_get_content(trial, seq, param_list):
         media = Media.objects.get(pk=media_list[media_index])
 
         if media:
-            return json.dumps({"ext": media.ext, "url": media.content.url}, ensure_ascii=False)
+            return json.dumps(
+                {"ext": media.ext, "url": media.content.url}, ensure_ascii=False
+            )
 
     raise Http404
 

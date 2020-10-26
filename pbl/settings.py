@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,9 +30,9 @@ SECRET_KEY = os.getenv(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = os.getenv("DEBUG", "True")
+DEBUG = environ.Env().bool("DEBUG", default=True)
 
-if DEBUG == "True":
+if DEBUG is True:
     ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = [os.getenv("ALLOWED_HOSTS")]
@@ -84,7 +86,7 @@ WSGI_APPLICATION = "pbl.wsgi.application"
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
-if DEBUG == "True":
+if DEBUG is True:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -101,6 +103,7 @@ else:
             "PASSWORD": os.getenv("DB_PASSWORD"),
             "HOST": os.getenv("DB_HOST"),
             "PORT": os.getenv("DB_PORT"),
+            "OPTIONS": {"sslmode": "require"},
         }
     }
 
@@ -131,3 +134,14 @@ STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+# Security.
+
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True

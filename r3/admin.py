@@ -39,7 +39,16 @@ class MediaAdmin(ExportMixin, admin.ModelAdmin):
 class TrialResource(resources.ModelResource):
     class Meta:
         model = Trial
-        fields = ("id", "started", "finished", "room", "nickname", "logic__name", "keyword", "comment")
+        fields = (
+            "id",
+            "started",
+            "finished",
+            "room",
+            "nickname",
+            "logic__name",
+            "keyword",
+            "comment",
+        )
 
 
 @admin.register(Trial)

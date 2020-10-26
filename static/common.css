@@ -1,10 +1,10 @@
 :root {
-    --text-color: dimgray;
-    --background-color: whitesmoke;
-    --hilight-text-color: white;
-    --cursor-text-color: black;
-    --block-background-color: darkgray;
-    --block-hilight-color: lightgray;
+    --text-color: #F0F4F8;
+    --background-color: #102A43;
+    --hilight-color: #F0F4F8;
+    --control-color: #243B53;
+    --block-background-color: #334268;
+    --block-hilight-color: #627D98;
 }
 
 body {
@@ -21,7 +21,7 @@ div.header {
     padding-right: 2rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    color: var(--cursor-text-color);
+    color: var(--control-color);
     background-color: var(--block-background-color);
 }
 
@@ -49,29 +49,29 @@ td.title {
     font-size: x-large;
     font-weight: bolder;
     border: 0;
-    color: var(--hilight-text-color);
+    color: var(--hilight-color);
 }
 
 td.mark {
     width: auto;
-    color: var(--hilight-text-color);
+    color: var(--hilight-color);
     background-color: var(--block-background-color);
 }
 
 td.cursor {
     width: auto;
-    color: var(--cursor-text-color);
-    background-color: var(--hilight-text-color);
+    color: var(--control-color);
+    background-color: var(--hilight-color);
 }
 
 td.space {
     border: 0;
-    color: var(--hilight-text-color);
+    color: var(--hilight-color);
     width: auto;
 }
 
 td.static {
-    min-width: 5rem;
+    min-width: 7rem;
     width: auto;
 }
 
@@ -89,11 +89,19 @@ table {
     text-align: left;
 }
 
+table.play {
+    margin: auto;
+}
+
 th {
-    border: solid 1px var(--hilight-text-color);
+    border: solid 1px var(--control-color);
     background-color: var(--block-hilight-color);
     padding: 1rem;
     min-width: 5rem;
+}
+
+tr.data {
+    display: inline-block;
 }
 
 td {
@@ -122,10 +130,10 @@ textarea {
 
 button {
     width: 10rem;
-    color: var(--cursor-text-color);
+    color: var(--hilight-color);
     background-color: var(--block-hilight-color);
     border-color: var(--block-hilight-color);
-    height: 2rem;
+    height: 3rem;
 }
 
 div.button {
@@ -136,7 +144,8 @@ div.button {
 }
 
 div.prompt {
-    background-color: var(--hilight-text-color);
+    color: var(--control-color);
+    background-color: var(--hilight-color);
     margin-top: 1rem;
     margin-bottom: 1rem;
     border: 1px solid var(--block-hilight-color);
@@ -157,16 +166,16 @@ div.content {
     font-size: xx-large;
 }
 
-img.content {
+img.content,
+video.content {
     margin: auto;
     width: 100%;
     height: 70%;
     object-fit: contain;
 }
 
-video.content {
-    margin: auto;
-    width: 100%;
-    height: 70%;
-    object-fit: contain;
+@media screen and (max-width: 480px) {
+    tr.data {
+        display: block;
+    }
 }

@@ -118,19 +118,25 @@
 {% block body %}
 <form action="../finish/{{trial.pk}}" method="GET">
     {% csrf_token %}
-    <table>
-        <tr>
+    <table class="play">
+        <tr class="data">
             <th>Room:</th>
             <td class="static">{{trial.room}}</td>
             <td class="space"></td>
+        </tr>
+        <tr class="data">
             <th>Nickname:</th>
             <td class="static">{{trial.nickname}}</td>
             <td class="space"></td>
+        </tr>
+        <tr class="data">
             <th>Time:</th>
             <td class="static">
                 <div id="counter">00:00</div>
             </td>
             <td class="space"></td>
+        </tr>
+        <tr class="data">
             <td class="button">
                 <button type="submit">Finish</button>
             </td>

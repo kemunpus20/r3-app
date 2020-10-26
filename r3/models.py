@@ -15,12 +15,18 @@ def generate_filename(_, filename):
 def filesize_validator(file):
 
     if file.size > FILE_SIZE_LIMIT:
-        raise ValidationError("File too large. Size should not exceed {} MB.".format(FILE_SIZE_LIMIT / (1024 * 1024)))
+        raise ValidationError(
+            "File too large. Size should not exceed {} MB.".format(
+                FILE_SIZE_LIMIT / (1024 * 1024)
+            )
+        )
 
 
 class Media(models.Model):
     updated = models.DateTimeField(auto_now=True)
-    content = models.FileField(blank=False, upload_to=generate_filename, validators=[filesize_validator])
+    content = models.FileField(
+        blank=False, upload_to=generate_filename, validators=[filesize_validator]
+    )
     ext = models.CharField(blank=False, max_length=10)
     source = models.CharField(blank=False, max_length=100)
     tag = models.CharField(blank=True, max_length=1000)
