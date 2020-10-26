@@ -32,10 +32,7 @@ SECRET_KEY = os.getenv(
 
 DEBUG = environ.Env().bool("DEBUG", default=True)
 
-if DEBUG is True:
-    ALLOWED_HOSTS = ["*"]
-else:
-    ALLOWED_HOSTS = [os.getenv("ALLOWED_HOSTS")]
+ALLOWED_HOSTS = ["localhost", os.getenv("ALLOWED_HOSTS")]
 
 # Application definition
 
@@ -85,16 +82,9 @@ WSGI_APPLICATION = "pbl.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+DB_ENGINE = os.getenv("DB_ENGINE", "SQLITE")
 
-if DEBUG is True:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
-
-else:
+if DB_ENGINE == "POSTGRESQL":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -104,6 +94,13 @@ else:
             "HOST": os.getenv("DB_HOST"),
             "PORT": os.getenv("DB_PORT"),
             "OPTIONS": {"sslmode": "require"},
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 
@@ -137,9 +134,9 @@ MEDIA_URL = "/media/"
 
 # Security.
 
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # SECURE_SSL_REDIRECT = True
