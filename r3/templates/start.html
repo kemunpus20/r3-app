@@ -1,39 +1,39 @@
-<!-- Base -->
-{% extends "base.html" %}
-
-<!-- Static -->
-{% load static %}
+{% extends "base.html" %} {% load static %}
 
 <!-- Header-->
 {% block header %}
-<table class="header">
-    <tr class="header">
-        <td class="title">R3-App</td>
-        <td class="mark">Setup</td>
-        <td class="space">▶</td>
-        <td class="cursor">Check</td>
-        <td class="space">▶</td>
-        <td class="mark">Show</td>
-        <td class="space">▶</td>
-        <td class="mark">Finish</td>
-    </tr>
-</table>
+<div class="header">
+    <div class="title">R3</div>
+    <div class="marks">
+        <div class="mark">Setup</div>
+        <div class="space">▶</div>
+        <div class="current">Check</div>
+        <div class="space">▶</div>
+        <div class="mark">Show</div>
+        <div class="space">▶</div>
+        <div class="mark">Finish</div>
+    </div>
+</div>
 {% endblock %}
 
 <!-- Body -->
 {% block body %}
-<table>
-    <tr class="data">
-        <th>Room:</th>
-        <td class="static">{{trial.room}}</td>
-        <td class="space"></td>
-    </tr>
-    <tr class="data">
-        <th>Nickname:</th>
-        <td class="static">{{trial.nickname}}</td>
-        <td class="space"></td>
-    </tr>
-</table>
+<div class="data">
+    <div class="name">
+        Room:
+    </div>
+    <div class="value">
+        {{trial.room}}</td>
+    </div>
+</div>
+<div class="data">
+    <div class="name">
+        Nickname:
+    </div>
+    <div class="value">
+        {{trial.nickname}}</td>
+    </div>
+</div>
 <div class="prompt">
     {{trial.logic.start_prompt | safe}}
 </div>

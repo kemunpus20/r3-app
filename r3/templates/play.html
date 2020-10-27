@@ -1,8 +1,4 @@
-<!-- Base -->
-{% extends "base.html" %}
-
-<!-- Static -->
-{% load static %}
+{% extends "base.html" %} {% load static %}
 
 <!-- Head -->
 {% block head %}
@@ -100,48 +96,51 @@
 
 <!-- Header-->
 {% block header %}
-<table class="header">
-    <tr class="header">
-        <td class="title">R3-App</td>
-        <td class="mark">Setup</td>
-        <td class="space">▶</td>
-        <td class="mark">Check</td>
-        <td class="space">▶</td>
-        <td class="cursor">Show</td>
-        <td class="space">▶</td>
-        <td class="mark">Finish</td>
-    </tr>
-</table>
+<div class="header">
+    <div class="title">R3</div>
+    <div class="marks">
+        <div class="mark">Setup</div>
+        <div class="space">▶</div>
+        <div class="mark">Check</div>
+        <div class="space">▶</div>
+        <div class="current">Show</div>
+        <div class="space">▶</div>
+        <div class="mark">Finish</div>
+    </div>
+</div>
 {% endblock %}
 
 <!-- Body -->
 {% block body %}
 <form action="../finish/{{trial.pk}}" method="GET">
     {% csrf_token %}
-    <table class="play">
-        <tr class="data">
-            <th>Room:</th>
-            <td class="static">{{trial.room}}</td>
-            <td class="space"></td>
-        </tr>
-        <tr class="data">
-            <th>Nickname:</th>
-            <td class="static">{{trial.nickname}}</td>
-            <td class="space"></td>
-        </tr>
-        <tr class="data">
-            <th>Time:</th>
-            <td class="static">
-                <div id="counter">00:00</div>
-            </td>
-            <td class="space"></td>
-        </tr>
-        <tr class="data">
-            <td class="button">
-                <button type="submit">Finish</button>
-            </td>
-        </tr>
-    </table>
+    <div class="data">
+        <div class="name">
+            Room:
+        </div>
+        <div class="value">
+            {{trial.room}}</td>
+        </div>
+    </div>
+    <div class="data">
+        <div class="name">
+            Nickname:
+        </div>
+        <div class="value">
+            {{trial.nickname}}</td>
+        </div>
+    </div>
+    <div class="data">
+        <div class="name">
+            Time:
+        </div>
+        <div id="counter" class="value">
+            00:00
+        </div>
+    </div>
+    <div class="data">
+        <button class="finish" type="submit">Finish</button>
+    </div>
     <div id="container" class="container">
         <div id="text" class="content"></div>
         <img id="image" class="content" />
