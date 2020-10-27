@@ -62,6 +62,7 @@ div.mark {
 div.space {
     display: inline;
     padding: 0.2rem;
+    border: 0;
 }
 
 div.version {
@@ -151,6 +152,7 @@ div.name {
     display: inline-block;
     margin: 0;
     padding: 1.0rem;
+    min-width: 5rem;
     font-size: small;
     font-weight: bold;
     background-color: var(--block-hilight-color);
@@ -210,6 +212,9 @@ video.content {
     }
     div.button {
         text-align: center;
+    }
+    button {
+        width: 6rem;
     }
     button.finish {
         width: 100%;
