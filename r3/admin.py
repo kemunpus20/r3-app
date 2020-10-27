@@ -20,7 +20,6 @@ class LogicAdmin(ImportExportModelAdmin):
     actions = ["prep_selected_logics"]
 
     def prep_selected_logics(self, _, queryset):
-
         for logic in queryset:
             prep(logic)
 

@@ -43,20 +43,21 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "import_export",
+    "storages",
     "django_cleanup",
+    "import_export",
     "r3.apps.R3Config",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "pbl.urls"
@@ -129,8 +130,18 @@ STATIC_URL = "/static/"
 
 # Media files.
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
+MEDIA_STORAGE = os.getenv("MEDIA_STORAGE", "LOCAL")
+
+if MEDIA_STORAGE == "AZURE_BLOB":
+    DEFAULT_FILE_STORAGE = "r3.backend.AzureMediaStorage"
+    AZURE_STORAGE_KEY = os.environ.get("AZURE_STORAGE_KEY")
+    AZURE_ACCOUNT_NAME = os.environ.get("AZURE_ACCOUNT_NAME")
+    AZURE_MEDIA_CONTAINER = os.environ.get("AZURE_MEDIA_CONTAINER")
+    AZURE_CUSTOM_DOMAIN = f"{AZURE_ACCOUNT_NAME}.azureedge.net"
+    MEDIA_URL = f"https://{AZURE_CUSTOM_DOMAIN}/{AZURE_MEDIA_CONTAINER}/"
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+    MEDIA_URL = "/media/"
 
 # Security.
 

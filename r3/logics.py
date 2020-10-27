@@ -1,7 +1,9 @@
 """ Logics """
 
+import datetime
 import json
 import logging
+import os
 import random
 
 from django.http import Http404
@@ -49,7 +51,10 @@ def get_content(trial, seq):
 
 
 def default_prep(logic, param_list):
-    logger.info("default_prep [{}].".format(logic.name))
+    state = str(datetime.datetime.today())
+    state += " default_prep [{}] started.".format(logic.name)
+    logic.state = state
+    logic.save()
 
     media_all = Media.objects.all().order_by("updated").reverse()
 
@@ -85,6 +90,12 @@ def default_prep(logic, param_list):
 
     logic.media_list = " ".join(map(str, media_list))
 
+    state += os.linesep
+    state += str(datetime.datetime.today())
+    state += " default_prep [{}] finished.".format(logic.name)
+    logic.state = state
+    logic.save()
+
 
 def default_get_content(trial, seq, param_list):
     logic = trial.logic
@@ -92,14 +103,14 @@ def default_get_content(trial, seq, param_list):
     media_list = logic.media_list.split()
     media_count = len(media_list)
 
-    if media_count > 0:
+    if media_count == 0:
+        return json.dumps({"ext": "txt", "url": "No data to show"})
+    else:
         media_index = int(seq) % media_count
         media = Media.objects.get(pk=media_list[media_index])
 
         if media:
-            return json.dumps(
-                {"ext": media.ext, "url": media.content.url}, ensure_ascii=False
-            )
+            return json.dumps({"ext": media.ext, "url": media.content.url})
 
     raise Http404
 

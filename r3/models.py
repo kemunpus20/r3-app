@@ -42,6 +42,7 @@ class Logic(models.Model):
     media_tag = models.CharField(blank=False, default="*", max_length=1000)
     media_list = models.CharField(blank=True, max_length=8000)
     media_count = models.IntegerField(default=0)
+    state = models.TextField(blank=True, max_length=1000)
 
     def __str__(self):
         return str(self.name)
