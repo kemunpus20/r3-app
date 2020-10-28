@@ -1,5 +1,4 @@
-{% extends "base.html" %} {% load static %}
-
+{% extends "base.html" %}
 <!-- Head -->
 {% block head %}
 <script type="text/javascript">
@@ -93,23 +92,21 @@
     }
 </script>
 {% endblock %}
-
 <!-- Header-->
 {% block header %}
 <div class="header">
     <div class="title">R3</div>
     <div class="marks">
         <div class="mark">Setup</div>
-        <div class="space">&#9654;</div>
+        <div class="space">></div>
         <div class="mark">Check</div>
-        <div class="space">&#9654;</div>
+        <div class="space">></div>
         <div class="current">Show</div>
-        <div class="space">&#9654;</div>
+        <div class="space">></div>
         <div class="mark">Finish</div>
     </div>
 </div>
 {% endblock %}
-
 <!-- Body -->
 {% block body %}
 <form action="../finish/{{trial.pk}}" method="GET">
@@ -138,9 +135,7 @@
             00:00
         </div>
     </div>
-    <div class="data">
-        <button class="finish" type="submit">Finish</button>
-    </div>
+    <button class="finish" type="submit">Finish</button>
     <div id="container" class="container">
         <div id="text" class="content"></div>
         <img id="image" class="content" />

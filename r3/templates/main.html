@@ -1,25 +1,23 @@
-{% extends "base.html" %} {% load static %}
-
+{% extends "base.html" %}
 <!-- Header-->
 {% block header %}
 <div class="header">
     <div class="title">R3</div>
     <div class="marks">
         <div class="current">Setup</div>
-        <div class="space">&#9654;</div>
+        <div class="space">></div>
         <div class="mark">Check</div>
-        <div class="space">&#9654;</div>
+        <div class="space">></div>
         <div class="mark">Show</div>
-        <div class="space">&#9654;</div>
+        <div class="space">></div>
         <div class="mark">Finish</div>
     </div>
 </div>
 {% endblock %}
-
 <!-- Body -->
 {% block body %}
 <div class="message">
-    Before starting the experiment, please read <a href="tutorial.html">the tutorial</a>.
+    Before starting the experiment, please read <a href="/static/tutorial.html">the tutorial</a>.
 </div>
 <form method="POST">
     <table>
