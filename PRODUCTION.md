@@ -20,7 +20,7 @@
 1. Setup your PostgreSQL instance.
     - Connectivity method : Public access.
     - PostgreSQL Version : 11
-1. Add your client ip to firewall to configure the service using psql cli. Note that I think the cloud shell could be better but it does not work correctly in my environment.
+1. Add your client IP to firewall to configure the service using psql cli. Note that I think the cloud shell could be better but it does not work correctly in my environment.
 1. Connect to the instance.
     ```
     psql host=your host name (e.g. hoge.postgres.database.azure.com) port=5432 dbname=your db name (e.g. postgres) user=your db admin name (e.g. psqladmin)
@@ -35,7 +35,7 @@
     GRANT ALL PRIVILEGES ON DATABASE r3 TO 'PSQLADMIN';
     /q
     ```
-1. Disconnect and remove ip from firewall configuration.
+1. Close session and remove IP from firewall configuration.
 
 ## Setup Azure Blob Storage.
 1. Create your storage account. (e.g. hogestorages)
@@ -68,15 +68,15 @@
 1. Configure automatic deploy from Github to Azure App Service.
 1. To setup database and application admin, start app service and connect that via ssh from the azure console. note that ssh would not work if Debug=False.
     ```
-    $ pip -r requirements
-    $ manage check
-    $ manage migrattions
-    $ manage migrate r3
-    $ manage createsuperuser
+    # pip install -r requirements
+    # manage check
+    # manage migrattions
+    # manage migrate r3
+    # manage createsuperuser
     ```    
 1. Change Debug to False and restart the service.
 
 ## Note.
 1. To improve system overall performance, use smart cache mechanism in both django and azure.
 1. Using Azure Private VNET would be better for security.
-1. To confirm django application configuration, 'manage.py check --deploy' will provides some security related information.
+1. To confirm django application configuration, `manage.py check --deploy` will provides some security related information.
