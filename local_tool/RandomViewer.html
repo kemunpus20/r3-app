@@ -1,0 +1,213 @@
+<html>
+<!-- RandomViewer 0.0.3 for AIIT Ikemoto-PBL 2020 by ken-ichi fujii -->
+
+<head>
+    <meta charset="utf-8">
+
+    <script type="text/javascript">
+        const interval = 5 * 1000;
+        const shuffle = 3;
+
+        let index = 0;
+        let items = [];
+        let state = null;
+        let timer = null;
+        let start = 0;
+        let last = 0;
+
+        let play = null;
+        let content = null;
+        let counter = null;
+
+        window.onload = () => {
+            play = document.getElementById("play");
+            select = document.getElementById("select");
+            content = document.getElementById("content");
+            counter = document.getElementById("counter");
+
+            setState("INITIALIZED");
+        }
+
+        function onPlay() {
+
+            switch (state) {
+                case "LOADED":
+                    setState("STARTED");
+                    break;
+
+                case "STARTED":
+                    setState("STOPPED");
+                    break;
+
+                case "STOPPED":
+                    setState("STARTED");
+                    break;
+            }
+        }
+
+        function onSelect() {
+            const file = event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                const lines = reader.result.split('\n');
+
+                items.length = 0;
+                index = 0;
+
+                for (let l = 0; l < lines.length; l++) {
+                    const item = lines[l].trim();
+
+                    if (item.length == 0 || item.startsWith("#")) {
+                        continue;
+                    }
+
+                    items.push(item);
+                }
+
+                for (let i = 0; i < items.length * shuffle; i++) {
+                    const r = Math.floor(Math.random() * items.length);
+                    const l = Math.floor(Math.random() * items.length);
+                    const t = items[r];
+
+                    items[r] = items[l];
+                    items[l] = t;
+                }
+
+                setState("LOADED");
+            };
+
+            reader.readAsText(file);
+        }
+
+        function onInterval() {
+            const now = new Date().getTime();
+
+            const diff = now - start;
+            const min = Math.floor(diff / (1000 * 60));
+            const sec = Math.floor(diff / 1000) - (min * 60);
+
+            const t = String(min).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+
+            counter.innerHTML = t;
+
+
+            if (now < (last + interval)) {
+                return;
+            }
+
+            last = now;
+
+            if (items.length == 0) {
+                return;
+            }
+
+            const item = items[index];
+
+            if (++index >= items.length) {
+                index = 0;
+            }
+
+            if (item.endsWith(".jpg") || item.endsWith(".JPG")) {
+                content.innerHTML = "<img class=\"image\" height=\"80%\" src=\"" + item + "\">";
+
+            } else if (item.endsWith(".mp4") || item.endsWith(".MP4")) {
+                content.innerHTML = "<video onloadstart=\"this.volume=0.0\" class=\"video\" height=\"80%\" autoplay><source src=\"" + item + "\"></video>";
+
+            } else if (item.endsWith(".mov") || item.endsWith(".MOV")) {
+                content.innerHTML = "<video onloadstart=\"this.volume=0.0\" class=\"video\" height=\"80%\" autoplay><source src=\"" + item + "\"></video>";
+
+            } else {
+                content.innerHTML = "<span class=\"text\">" + item + "</span>";
+            }
+        }
+
+        function setState(newState) {
+
+            switch (newState) {
+
+                case "INITIALIZED":
+                    content.innerHTML = "load your file first.";
+                    break;
+
+                case "LOADED":
+
+                    if (timer) {
+                        clearTimeout(timer);
+                        timer = null;
+                    }
+
+                    play.value = "START";
+                    play.style.visibility = "visible";
+                    content.innerHTML = items.length + " items has been loaded.";
+                    break;
+
+                case "STARTED":
+                    start = new Date().getTime();
+                    last = start - interval;
+
+                    if (!timer) {
+                        timer = setInterval(onInterval, 1000 / 2);
+                        onInterval();
+                    }
+
+                    play.value = "STOP";
+                    break;
+
+                case "STOPPED":
+
+                    if (timer) {
+                        clearTimeout(timer);
+                        timer = null;
+                    }
+
+                    play.value = "RESTART";
+                    content.innerHTML = "load new file or restart.";
+                    break;
+            }
+
+            state = newState;
+        }
+    </script>
+
+    <style type="text/css">
+        body {
+            background: black;
+            color: white;
+        }
+        
+        div.container {
+            width: 100%;
+            height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        div.content {
+            font-size: 48pt;
+        }
+        
+        div.counter {
+            text-align: center;
+        }
+    </style>
+
+    <title>Random Viewer</title>
+</head>
+
+<body>
+    <input id="file" class="file" type="file" onchange="onSelect();">
+    <input id="play" class="play" type="button" style="visibility:hidden" onclick="onPlay();">
+    <div id="container" class="container">
+        <div id="content" class="content"></div>
+    </div>
+    <div id="counter" class="counter">00:00</div>
+</body>
+
+</html>
