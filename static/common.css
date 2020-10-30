@@ -173,6 +173,9 @@ video.content {
 }
 
 @media screen and (max-width: 480px) {
+    body {
+        overflow: auto;
+    }
     div.data {
         display: flex;
         line-height: 1rem;

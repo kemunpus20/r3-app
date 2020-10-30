@@ -12,16 +12,16 @@
     - All media files are stored here.
 
 ## Setup account.
- 1. Create your azure account.
- 1. Create your resource group. 
- 1. Create your app service plan.
+ 1. Create your Azure Account.
+ 1. Create your Resource Group. 
+ 1. Create your App Service Plan.
 
 ## Setup Azure Database Service.
-1. Setup your PostgreSQL instance.
+1. Setup your PostgreSQL service instance.
     - Connectivity method : Public access.
     - PostgreSQL Version : 11
 1. Add your client IP to firewall to configure the service using psql cli. Note that I think the cloud shell could be better but it does not work correctly in my environment.
-1. Connect to the instance.
+1. Connect to the service instance.
     ```
     psql host=your host name (e.g. hoge.postgres.database.azure.com) port=5432 dbname=your db name (e.g. postgres) user=your db admin name (e.g. psqladmin)
     ```
@@ -73,10 +73,10 @@
     # manage migrattions
     # manage migrate r3
     # manage createsuperuser
-    ```    
+    ```
 1. Change Debug to False and restart the service.
 
 ## Note.
-1. To improve system overall performance, use smart cache mechanism in both django and azure.
+1. To improve system overall performance, use smart cache mechanism in both Django and Azure.
 1. Using Azure Private VNET would be better for security.
 1. To confirm Django application settings, `manage.py check --deploy` will provides some security related information.
