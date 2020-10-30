@@ -1,6 +1,6 @@
-# How to deply to Azure.
+# How to deply to Azure
 
-## Role and connectivity.
+## Brief architecture
 - Application Server is Azure App Service
     - Connection : Client browser -> App Service (nginx -> gunicorn -> django)
     - All static files are inside the app service local file system using whitenoise middlwware.
@@ -10,13 +10,19 @@
 - Blob storage is Azure Blob Storage Service
     - Connection : Client browser -> Blob Storage.
     - All media files are stored here.
+- Code repository is GitHub
+    - Deployment : Automated using Github Actions.
 
-## Setup account.
+![architecture](architecture.png)
+
+---
+
+## Setup account
  1. Create your Azure Account.
  1. Create your Resource Group. 
  1. Create your App Service Plan.
 
-## Setup Azure Database Service.
+## Setup Azure Database Service
 1. Setup your PostgreSQL service instance.
     - Connectivity method : Public access.
     - PostgreSQL Version : 11
@@ -37,14 +43,14 @@
     ```
 1. Close session and remove IP from firewall configuration.
 
-## Setup Azure Blob Storage.
+## Setup Azure Blob Storage
 1. Create your storage account. (e.g. hogestorages)
 1. Create new container in the storage account. (e.g. hoge-container)
     - Public access level : blob
     - Blob type : Block blob
     - Access tier : hot
 
-## Setup Azure App Service.
+## Setup Azure App Service
 1. Create App Service for Python Django.
     - Stack : Python
     - Version : Python 3.7
@@ -65,7 +71,7 @@
     - AZURE_STORAGE_KEY : your storage key
     - ALLOWED_HOSTS : your application url (e.g. hoge.azurewebsites.net)
     - DEBUG : True (will change to False later soon)
-1. Configure automatic deploy from Github to Azure App Service.
+1. Configure automatic deployment from Github to Azure App Service using GitHub Actions.
 1. To setup database and application admin, start app service and connect that via ssh from the azure console. note that ssh would not work if Debug is "False".
     ```
     # pip install -r requirements
@@ -76,7 +82,9 @@
     ```
 1. Change Debug to False and restart the service.
 
-## Note.
+---
+
+## Note
 1. To improve system overall performance, use smart cache mechanism in both Django and Azure.
 1. Using Azure Private VNET would be better for security.
 1. To confirm Django application settings, `manage.py check --deploy` will provides some security related information.
