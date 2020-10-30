@@ -1,17 +1,17 @@
 # How to deply to Azure.
 
 ## Role and connectivity.
-- Application Server - Azure App Service
+- Application Server is Azure App Service
     - Connection : Client browser -> App Service (nginx -> gunicorn -> django)
     - All static files are inside the app service local file system using whitenoise middlwware.
-- Database Service - Azure Database for PostgreSQL
+- Database Server is Azure Database Service for PostgreSQL
     - Connection : App Service -> Database service (PostgerSQL)
     - All objects defined by models except media files are stored here.
-- Blob storage - Azure Blob Storage
+- Blob storage is Azure Blob Storage Service
     - Connection : Client browser -> Blob Storage.
     - All media files are stored here.
 
-## Preparations.
+## Setup account.
  1. Create your azure account.
  1. Create your resource group. 
  1. Create your app service plan.
@@ -25,7 +25,7 @@
     ```
     psql host=your host name (e.g. hoge.postgres.database.azure.com) port=5432 dbname=your db name (e.g. postgres) user=your db admin name (e.g. psqladmin)
     ```
-1. Initialize some tables. be sure to use a complex password!
+1. Create database and user account. be sure to use a complex password!
     ```
     CREATE DATABASE r3;
     CREATE USER PSQLADMIN WITH PASSWORD 'PASSWORD';
@@ -66,7 +66,7 @@
     - ALLOWED_HOSTS : your application url (e.g. hoge.azurewebsites.net)
     - DEBUG : True (will change to False later soon)
 1. Configure automatic deploy from Github to Azure App Service.
-1. To setup database and application admin, start app service and connect that via ssh from the azure console. note that ssh would not work if Debug=False.
+1. To setup database and application admin, start app service and connect that via ssh from the azure console. note that ssh would not work if Debug is "False".
     ```
     # pip install -r requirements
     # manage check
@@ -79,4 +79,4 @@
 ## Note.
 1. To improve system overall performance, use smart cache mechanism in both django and azure.
 1. Using Azure Private VNET would be better for security.
-1. To confirm django application configuration, `manage.py check --deploy` will provides some security related information.
+1. To confirm Django application settings, `manage.py check --deploy` will provides some security related information.
