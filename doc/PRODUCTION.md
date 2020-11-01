@@ -18,39 +18,38 @@
 ---
 
 ## Setup account
- 1. Create your Azure Account.
- 1. Create your Resource Group. 
- 1. Create your App Service Plan.
-
+ 1. Create your Azure Account, Subscription and Resource Group. 
+ 
 ## Setup Azure Database Service
-1. Setup your PostgreSQL service instance.
+1. Setup PostgreSQL service instance.
     - Connectivity method : Public access.
     - PostgreSQL Version : 11
 1. Add your client IP to firewall to configure the service using psql cli. Note that I think the cloud shell could be better but it does not work correctly in my environment.
 1. Connect to the service instance.
     ```
-    psql host=your host name (e.g. hoge.postgres.database.azure.com) port=5432 dbname=your db name (e.g. postgres) user=your db admin name (e.g. psqladmin)
+    psql host=<host name> (e.g. hoge.postgres.database.azure.com) port=5432 dbname=<db name> (e.g. postgres) user=<db admin name> (e.g. psqladmin)
     ```
-1. Create database and user account. be sure to use a complex password!
+1. Create database and db admin account. be sure to use a complex password!
     ```
     CREATE DATABASE r3;
-    CREATE USER PSQLADMIN WITH PASSWORD 'PASSWORD';
-    ALTER ROLE PSQLADMIN SET client_encoding TO 'utf8';
-    ALTER ROLE PSQLADMIN SET default_transaction_isolation TO 'read committed';
-    ALTER ROLE PSQLADMIN SET timezone TO 'Asia/Tokyo';
-    GRANT ALL PRIVILEGES ON DATABASE r3 TO 'PSQLADMIN';
+    CREATE USER <db admin name> WITH PASSWORD <db admin password>;
+    ALTER ROLE <db admin name> SET client_encoding TO 'utf8';
+    ALTER ROLE <db admin name> SET default_transaction_isolation TO 'read committed';
+    ALTER ROLE <db admin name> SET timezone TO 'Asia/Tokyo';
+    GRANT ALL PRIVILEGES ON DATABASE r3 TO 'db admin name';
     /q
     ```
 1. Close session and remove IP from firewall configuration.
 
 ## Setup Azure Blob Storage
-1. Create your storage account. (e.g. hogestorages)
+1. Create storage account. (e.g. hogestorages)
 1. Create new container in the storage account. (e.g. hoge-container)
     - Public access level : blob
     - Blob type : Block blob
     - Access tier : hot
 
 ## Setup Azure App Service
+1. Create App Service Plan.
 1. Create App Service for Python Django.
     - Stack : Python
     - Version : Python 3.7
@@ -60,16 +59,16 @@
     - Minimum TLS Version : 1.2
 1. Add application settings as follows.
     - DB_ENGINE : POSTGRESQL (see [settings.py](pbl/settings.py))
-    - DB_HOST : your db url (e.g. hoge.postgres.database.azure.com)
+    - DB_HOST : db url (e.g. hoge.postgres.database.azure.com)
     - DB_NAME : r3
-    - DB_USER : your db admin name (e.g. psqladmin)
-    - DB_PASSWORD : your db admin password
+    - DB_USER : db admin name (e.g. psqladmin)
+    - DB_PASSWORD : db admin password
     - DB_PORT : 5432
     - MEDIA_STORAGE : AZURE_BLOB (see [settings.py](pbl/settings.py))
-    - AZURE_ACCOUNT_NAME : your storage account name (e.g. hogestorages)
-    - AZURE_MEDIA_CONTAINER : your storage container name (e.g. hoge-container)
-    - AZURE_STORAGE_KEY : your storage key
-    - ALLOWED_HOSTS : your application url (e.g. hoge.azurewebsites.net)
+    - AZURE_ACCOUNT_NAME : storage account name (e.g. hogestorages)
+    - AZURE_MEDIA_CONTAINER : storage container name (e.g. hoge-container)
+    - AZURE_STORAGE_KEY : storage key
+    - ALLOWED_HOSTS : application url (e.g. hoge.azurewebsites.net)
     - DEBUG : True (will change to False later soon)
 1. Configure automatic deployment from Github to Azure App Service using GitHub Actions.
 1. To setup database and application admin, start app service and connect that via ssh from the azure console. note that ssh would not work if Debug is "False".

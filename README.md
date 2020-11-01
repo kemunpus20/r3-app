@@ -29,17 +29,17 @@ $ ./manage.py migrate
 $ ./manage.py createsuperuser
 $ ./manage.py runserver
 ```
-Now you can acccess http://localhost:8000 to get application main screen and http://localhost:8000/manager to open Django built-in administration application with superuser regstered in above step. Be sure path to administration screen has been changed from default value "admin" to "manahger" for security reason. And also you can use `gunicorn --bind:0.0.0.0:8000 pbl.wsgi` instead of `manage.py runserver` as similar to the production environment.
+Now you can acccess http://localhost:8000 to get application main screen and http://localhost:8000/manager to open Django built-in administration application with superuser regstered in above step. Be sure that path to administration screen has been changed from default value "admin" to "manahger" for security reason. And also you can use `gunicorn --bind:0.0.0.0:8000 pbl.wsgi` instead of `manage.py runserver` as similar to the production environment.
 
 ### Setup data for your test drive
 To prepare minimam data, follow below steps in the administration application.
  1. Add your several media files (should be jpg or mp4) using "Media" menu.
- 1. Create your own experiment logic using "Logic" menu. be sure "default_logic" might be in the param field.
+ 1. Create your own experiment logic using "Logic" menu. Note that "default_logic" might be in the param field.
  1. "Prep" your logic using "Prep selected logics" menu in the Logic list. This operation assigns relavant media files to the logic.
  1. Launch main application with http://localhost:8000 and try to start your experiment using the logic you created.
 
 ## Install to your production environment
- I have decided to use [Microsoft Azure](https://azure.microsoft.com) as my production environment. And the system will be deployed automatically when code has been comitted to this GutHub repository "main" branch. So be sure to commit the code carefully. Regarding deployment to Azure, please read separated document [How to deploy to Azure](doc/PRODUCTION.md).
+ I have decided to use [Microsoft Azure](https://azure.microsoft.com) as my production environment. And the system will be deployed automatically when code has been comitted to this GutHub repository "main" branch. Regarding deployment to Azure, please read separated document [How to deploy to Azure](doc/PRODUCTION.md).
 
 ## To-do and ideas list
 I will try to handle following issues if I have a time...

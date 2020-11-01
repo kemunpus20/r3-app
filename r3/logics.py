@@ -2,15 +2,12 @@
 
 import datetime
 import json
-import logging
 import os
 import random
 
 from django.http import Http404
 
 from .models import Media
-
-logger = logging.getLogger("django")
 
 
 def prep(logic):
@@ -37,6 +34,7 @@ def prep(logic):
         dynamic_prep(logic, param_list)
 
     else:
+
         # 知らないLogicの名前が指定されたらエラーです.
         raise Http404
 
@@ -81,7 +79,7 @@ def default_prep(logic, param_list):
 
     # 実行開始の情報をstateに書いておきます.
     state = str(datetime.datetime.today())
-    state += " default_prep [{}] started.".format(logic.name)
+    state += " default_prep started."
     logic.state = state
     logic.save()
 
@@ -107,18 +105,22 @@ def default_prep(logic, param_list):
             matched = False
 
             if "*" in tag_list:
+
                 # 対象となる拡張子が*で指定されているのならそのMediaは採用です.
                 matched = True
 
             else:
+
                 # それ以外の場合にはMediaの拡張子がリストに含まれているか確認します.
                 media_tag_list = media.tag.split()
 
                 if not set(media_tag_list).isdisjoint(tag_list):
+
                     # 含まれていればそのMediaは採用です.
                     matched = True
 
             if matched:
+
                 # 採用の場合は結果リストに追記しておきます.
                 media_list.append(media.id)
 
@@ -136,7 +138,7 @@ def default_prep(logic, param_list):
     # 実行終了の情報をstateに書いておきます.
     state += os.linesep
     state += str(datetime.datetime.today())
-    state += " default_prep [{}] finished.".format(logic.name)
+    state += " default_prep finished."
     logic.state = state
 
     # データベースに結果を書き込んで終了です.
@@ -157,15 +159,18 @@ def default_get_content(trial, seq, param_list):
     media_count = len(media_list)
 
     if media_count == 0:
-        # 表示すべきデータが一個もないのばあえてエラーにはしません.
+
+        # 表示すべきデータが一個もない場合はエラーにはせずにメッセージを出すようにします.
         return json.dumps({"ext": "txt", "url": "No data to show"})
 
     else:
+
         # seq番目のMediaをとってきます.
         media_index = int(seq) % media_count
         media = Media.objects.get(pk=media_list[media_index])
 
         if media:
+
             # Mediaが無事に取れた場合にはjsonを返します.
             return json.dumps({"ext": media.ext, "url": media.content.url})
 
@@ -177,8 +182,7 @@ def dynamic_prep(logic, param_list):
     """
     動的にMediaを取得するLogicです.まだ何も実装していません.
     """
-
-    logger.info("dynamic_prep [{}].".format(logic.name))
+    pass
 
 
 def dynamic_get_content(trial, seq, param_list):
