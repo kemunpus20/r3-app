@@ -71,11 +71,11 @@
     - ALLOWED_HOSTS : application url (e.g. hoge.azurewebsites.net)
     - DEBUG : True (will change to False later soon)
 1. Configure automatic deployment from Github to Azure App Service using GitHub Actions.
-1. To setup database and application admin, start app service and connect that via ssh from the azure console. note that ssh would not work if Debug is "False".
+1. To setup database and application admin, start app service and connect that via ssh from Azure Console. Then executes some commands as below. Please note that ssh would not work if Debug is "False". .
     ```
     # pip install -r requirements
     # manage check
-    # manage migrattions
+    # manage makemigrattions
     # manage migrate r3
     # manage createsuperuser
     ```
