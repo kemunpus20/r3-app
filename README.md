@@ -11,7 +11,7 @@ Simple web-based system to support various internal hypothetical-based experimen
 - Server : [Python](https://www.python.org/) 3.7 and [Django](https://www.djangoproject.com/) 3.1. Depended modulses are described in [requirements.txt](requirements.txt).
 - Client : Modern browser that supports JavaScript and HTML5. Chrome, Firefox, and New Edge would be fine. I am very sorry that IE11 does not work correctly due to lack of CSS support.
 
-## Restrictions and know issues
+## Restrictions and known issues
 1. This system does not provide any original media streaming / decoding mechanism, so supported media format is completely depends on the client browser and codecs. For example, legacy quicktime format which basically has .mov extention does not supported by latest browsers. Hence If you need to use your original good old family movie recorded by traditional digital camera, you may have to convert that to mp4. [FFmpeg](https://ffmpeg.org/) cound be a solution in the case.
 1. Back-end media storage always accepts any data as a media file. But client-side javascript (see [play.html](r3/templates/play.html)) that handles media data is restricted to mp4, ogg, webm, jpg, and png only.
 1. Max size of media file should be less than 30M bytes. Modify [models.py](r3/models.py) if you have to change this limitation.
