@@ -137,7 +137,7 @@ if MEDIA_STORAGE == "AZURE_BLOB":
     AZURE_STORAGE_KEY = os.environ.get("AZURE_STORAGE_KEY")
     AZURE_ACCOUNT_NAME = os.environ.get("AZURE_ACCOUNT_NAME")
     AZURE_MEDIA_CONTAINER = os.environ.get("AZURE_MEDIA_CONTAINER")
-    AZURE_CUSTOM_DOMAIN = f"{AZURE_ACCOUNT_NAME}.blob.core.windows.net/"
+    AZURE_CUSTOM_DOMAIN = os.environ.get("AZURE_CUSTOM_DOMAIN")
     MEDIA_URL = f"https://{AZURE_CUSTOM_DOMAIN}/{AZURE_MEDIA_CONTAINER}/"
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")

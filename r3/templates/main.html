@@ -1,4 +1,36 @@
 {% extends "base.html" %}
+<!-- Head -->
+{% block head %}
+<script type="text/javascript">
+    window.onload = () => {
+        let select = document.getElementById('id_logic');
+        let map = new Map();
+        let null_text = null;
+
+        for (let i = 0; i < select.length; i++) {
+
+            if (select.options[i].value) {
+                map.set(select.options[i].text, select.options[i].value);
+
+            } else {
+                null_text = select.options[i].text;
+            }
+        }
+
+        let sorted = new Map([...map.entries()].sort());
+
+        select.options[0].text = null_text;
+        select.options[0].value = null;
+        let index = 1;
+
+        for (let [key, value] of sorted) {
+            select.options[index].text = key;
+            select.options[index].value = value;
+            index++;
+        }
+    }
+</script>
+{% endblock %}
 <!-- Header-->
 {% block header %}
 <div class="header">

@@ -24,7 +24,7 @@
 1. Setup PostgreSQL service instance.
     - Connectivity method : Public access.
     - PostgreSQL Version : 11
-1. Add your client IP to firewall to configure the service using psql cli. Note that I think the cloud shell could be better but it does not work correctly in my environment.
+1. Add your client IP to firewall to configure the service using psql cli. Note that I think the cloud shell could be better.
 1. Connect to the service instance.
     ```
     psql host=<host name> (e.g. hoge.postgres.database.azure.com) port=5432 dbname=<db name> (e.g. postgres) user=<db admin name> (e.g. psqladmin)
@@ -66,6 +66,7 @@
     - DB_PORT : 5432
     - MEDIA_STORAGE : AZURE_BLOB (see [settings.py](pbl/settings.py))
     - AZURE_ACCOUNT_NAME : storage account name (e.g. hogestorages)
+    - AZURE_CUSTOM_DOMAIN : storage custom domain (e.g. hogestorages.blob.core.windows.net)
     - AZURE_MEDIA_CONTAINER : storage container name (e.g. hoge-container)
     - AZURE_STORAGE_KEY : storage key
     - ALLOWED_HOSTS : application url (e.g. hoge.azurewebsites.net)

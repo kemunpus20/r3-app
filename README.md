@@ -34,7 +34,7 @@ Now you can acccess http://localhost:8000 to get application main screen and htt
 ### Setup data for your test drive
 To prepare minimam data, follow below steps in the administration application.
  1. Add your several media files (should be jpg or mp4) using "Media" menu.
- 1. Create your own experiment logic using "Logic" menu. Note that "default_logic" might be in the param field.
+ 1. Create your own experiment logic using "Logic" menu. Be sure that "default_logic" might be in the param field.
  1. "Prep" your logic using "Prep selected logics" menu in the Logic list. This operation assigns relavant media files to the logic.
  1. Launch main application with http://localhost:8000 and try to start your experiment using the logic you created.
 
@@ -43,8 +43,7 @@ To prepare minimam data, follow below steps in the administration application.
 
 ## To-do and ideas list
 I will try to handle following issues if I have a time...
-1. Developing a new logic that uses keywords participant specified in main screen, and retrieves media files from the internet automatically. I have an idea to use [MediaWiki](https://www.mediawiki.org/) REST API to getting relavant "safe and free" movie files.
-1. Controls the order of "Logic" names on the main screen to choose easier by participants.
+1. Developing a new logic that uses participant specified keywords, and retrieves media files from the internet automatically. I have an idea to use [MediaWiki](https://www.mediawiki.org/) REST API to getting relavant "safe and free" movie files.
 1. Isolate "Prep" task from Django main thread to supports more complecated and time-consuming algorithms in the logic module. Using [django-background-tasks](https://django-background-tasks.readthedocs.io/) could be a solution. may be a custom startup script for production environment also needed, and then "Prep" might be start automatically.
 1. Obviously current design of Logic.media_list is neither safety nor scalable. So to reconsider data relationship between Logic and Trial once again.
 1. To add a feature to supports text (keywords) as a Media object.
