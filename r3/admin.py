@@ -20,6 +20,7 @@ class LogicAdmin(ImportExportModelAdmin):
     actions = ["prep_selected_logics"]
 
     def prep_selected_logics(self, _, queryset):
+
         for logic in queryset:
             prep(logic)
 
@@ -27,8 +28,8 @@ class LogicAdmin(ImportExportModelAdmin):
 @admin.register(Media)
 class MediaAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "updated", "ext", "content", "source", "tag")
-    exclude = ("ext",)
     formats = [base_formats.CSV, base_formats.XLSX, base_formats.HTML]
+    exclude = ("ext",)
 
     def save_model(self, request, obj, form, change):
         obj.ext = str(obj.content).split(".")[-1].lower()

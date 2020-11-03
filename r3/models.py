@@ -15,6 +15,7 @@ def generate_filename(_, filename):
 def filesize_validator(file):
 
     if file.size > FILE_SIZE_LIMIT:
+
         raise ValidationError(
             "File too large. Size should not exceed {} MB.".format(
                 FILE_SIZE_LIMIT / (1024 * 1024)

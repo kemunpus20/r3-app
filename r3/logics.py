@@ -11,22 +11,29 @@ from .models import Media
 
 
 def prep(logic):
-    """
-    実際のprep実装に処理を渡すためのインタフェースです.
+    """Logicの準備をします.
 
-    Parameters
-    ----------
-    logic : Logic
-        準備(prep)をするlogicオブジェクト.
+    paramの中で指定されている情報に基づいて個別のprep実装を呼び出します.
+
+    Args:
+        logic (Logic): 対象となるLogicのインスタンス.
+
+    Raises:
+        Http404: paramに処理可能なLogicの名前がない場合.
     """
 
+    # パラメータを分解して保持します.
     param_list = logic.param.split()
 
     # 結果のリストを空にしておきます.
     logic.media_list = ""
     logic.media_count = 0
+    logic.state = ""
 
-    # 実装を呼び出します.
+    # 一回保存しておきます.
+    logic.save()
+
+    # paramで指定されている実装を呼び出します.
     if "default_logic" in param_list:
         default_prep(logic, param_list)
 
@@ -34,7 +41,6 @@ def prep(logic):
         dynamic_prep(logic, param_list)
 
     else:
-
         # 知らないLogicの名前が指定されたらエラーです.
         raise Http404
 
@@ -43,15 +49,19 @@ def prep(logic):
 
 
 def get_content(trial, seq):
-    """
-    実際のget_content実装に処理を渡すためのインタフェースです.
+    """表示するMediaを決定します.
 
-    Parameters
-    ----------
-    trial : Trial
-        実行中のTrialオブジェクト.
-    seq : int
-         表示を要求されたMediaのシーケンス番号.
+    paramの中で指定されている情報に基づいて個別のget_content実装を呼び出します.
+
+    Args:
+        trial (Trial): 実行中のTrialのインスタンス.
+        seq (int): 要求しているメディアの連番.
+
+    Raises:
+        Http404: 該当するMediaが見つからなかった場合.
+
+    Returns:
+        (Json) メディアの型とURLが示されたJsonデータ.
     """
 
     # Trialに結び付けられているLogicを取得します.
@@ -67,21 +77,42 @@ def get_content(trial, seq):
     elif "dynamic_logic" in param_list:
         return dynamic_get_content(trial, seq, param_list)
 
-    else:
-        raise Http404
+    # 知らないLogicの名前が指定されたらエラーです.
+    raise Http404
+
+
+def add_state(logic, message):
+    """logicのstateに日時情報を前置してメッセージを追記します.
+
+    Args:
+        logic (Logic): 対象となるLogicのインスタンス.
+        message (str): 追記したいメッセージ.
+    """
+
+    state = logic.state
+    state += str(datetime.datetime.today())
+    state += " "
+    state += message
+    state += os.linesep
+    logic.state = state
+    logic.save()
 
 
 def default_prep(logic, param_list):
-    """
-    もっとも基本的なlogicです.
-    単純に条件に合致するMediaを検索してリストに保存します.
+    """もっとも基本となるLogicを準備します.
+
+    このLogicは単純に指定された条件に合致するMediaを選択します.
+
+    Args:
+        logic (Logic): 対象となるLogicのインスタンス.
+        param_list (list): パラメータのリスト.
     """
 
+    # ひとつのLogicに入る最大のMediaの個数です.
+    MAX_MEDIA_COUNT = 100
+
     # 実行開始の情報をstateに書いておきます.
-    state = str(datetime.datetime.today())
-    state += " default_prep started."
-    logic.state = state
-    logic.save()
+    add_state(logic, "default_prep started.")
 
     # 対象となるMediaをすべて新しい順に取得します.
     media_all = Media.objects.all().order_by("updated").reverse()
@@ -121,34 +152,48 @@ def default_prep(logic, param_list):
 
             if matched:
 
+                # 結果リストがいっぱいだったらもう追加しません.
+                if len(media_list) >= MAX_MEDIA_COUNT:
+                    break
+
                 # 採用の場合は結果リストに追記しておきます.
                 media_list.append(media.id)
-
-    # 採用されたMediaの個数を保管しておきます.
-    logic.media_count = len(media_list)
 
     # Logicのparamにshuffleが指定されていれば結果のリストをシャッフルします.
     if "shuffle" in param_list:
         random.shuffle(media_list)
 
     # リストを空白区切りの文字列に展開します.
+    media_list_str = " ".join(map(str, media_list))
+
     # この辺は量が多くなった場合にはもう少し別の方法を考えるべきです...
-    logic.media_list = " ".join(map(str, media_list))
+    logic.media_list = media_list_str
+
+    # 採用されたMediaの個数を保管しておきます.
+    logic.media_count = len(media_list)
 
     # 実行終了の情報をstateに書いておきます.
-    state += os.linesep
-    state += str(datetime.datetime.today())
-    state += " default_prep finished."
-    logic.state = state
+    add_state(logic, "default_prep finished.")
 
     # データベースに結果を書き込んで終了です.
     logic.save()
 
 
 def default_get_content(trial, seq, param_list):
-    """
-    もっとも基本的なlogicです.
-    すでに単純に条件に合致するMediaを検索してリストに保存してありますので、そのseq番目を返します.
+    """もっとも基本となるLogicで表示すべきMediaを決定します.
+
+    このLogicは単純に指定された条件に合致するMediaを選択します.
+
+    Args:
+        logic (Logic): 対象となるLogicのインスタンス.
+        seq (int): 要求しているメディアの連番.
+        param_list (list): パラメータのリスト.
+
+    Raises:
+        Http404: 該当するMediaが見つからなかった場合.
+
+    Returns:
+        (Json) メディアの型とURLが示されたJsonデータ.
     """
 
     # 実行中のTrialに結び付けられているLogicを取得します.
@@ -179,15 +224,32 @@ def default_get_content(trial, seq, param_list):
 
 
 def dynamic_prep(logic, param_list):
-    """
-    動的にMediaを取得するLogicです.まだ何も実装していません.
+    """ダイナミックにMediaを決定するLogicを準備します.
+
+    このLogicは現時点では未実装です.
+
+    Args:
+        logic (Logic): 対象となるLogicのインスタンス.
+        param_list (list): パラメータのリスト.
     """
     pass
 
 
 def dynamic_get_content(trial, seq, param_list):
-    """
-    動的にMediaを取得するLogicです.まだ何も実装していません.
+    """ダイナミックにLogicで表示すべきMediaを決定します.
+
+    このLogicは現時点では未実装です.
+
+    Args:
+        logic (Logic): 対象となるLogicのインスタンス.
+        seq (int): 要求しているメディアの連番.
+        param_list (list): パラメータのリスト.
+
+    Raises:
+        Http404: 該当するMediaが見つからなかった場合.
+
+    Returns:
+        (Json) メディアの型とURLが示されたJsonデータ.
     """
 
     raise Http404
