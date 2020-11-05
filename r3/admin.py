@@ -3,7 +3,7 @@
 import django
 from django.contrib import admin
 from import_export import resources
-from import_export.admin import ExportMixin, ImportExportModelAdmin
+from import_export.admin import ExportActionMixin, ExportMixin
 from import_export.formats import base_formats
 
 from .logics import prep
@@ -14,7 +14,7 @@ admin.site.unregister(django.contrib.auth.models.Group)
 
 
 @admin.register(Logic)
-class LogicAdmin(ImportExportModelAdmin):
+class LogicAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "name", "param", "media_count")
     formats = [base_formats.CSV, base_formats.XLSX, base_formats.HTML]
     actions = ["prep_selected_logics"]
@@ -52,7 +52,7 @@ class TrialResource(resources.ModelResource):
 
 
 @admin.register(Trial)
-class TrialAdmin(ExportMixin, admin.ModelAdmin):
+class TrialAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = ("id", "started", "finished", "room", "nickname", "logic")
     formats = [base_formats.CSV, base_formats.XLSX, base_formats.HTML]
     resource_class = TrialResource

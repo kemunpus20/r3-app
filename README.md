@@ -14,7 +14,7 @@ Simple web-based system to support various internal hypothetical-based experimen
 ## Restrictions and known issues
 1. This system does not provide any original media streaming / decoding mechanism, so supported media format is completely depends on the client browser and codecs. For example, legacy quicktime format which basically has .mov extention does not supported by latest browsers. Hence If you need to use your original good old family movie recorded by traditional digital camera, you may have to convert that to mp4. [FFmpeg](https://ffmpeg.org/) cound be a solution in the case.
 1. Back-end media storage always accepts any data as a media file. But client-side javascript (see [play.html](r3/templates/play.html)) that handles media data is restricted to mp4, webm, jpg and png only.
-1. Max size of media file should be less than 30M bytes. Modify [models.py](r3/models.py) if you have to change this limitation.
+1. Maximum size of media file should be less than 30M bytes, and maximum number of medias that can be assigned to one logic is 100. Modify [models.py](r3/models.py) if you have to change this limitation.
 1. User can anytime use any browser buttons like a "back" and "reload". There is no impact to the system from data consistency point of view, but it might be confused from experiment participant point of view.
 1. Experiment host has to update every Logics when new Media file has been added. At this stage, this process called "Prep" is implemented as a part of synchronous HTTP handler. So perhaps client browser will be timed-out in "Prep" process if bunch of media files registererd in the system. Data stored back-end will be updated successfully even if client is timed-out. So I think this is not a critical issue at the moment.
 1. Feature to showing some keyword as a hint instead of image or movie is not implemented yet. Please concider to use a tool named [RandomViwer.html](local_tool/RandomViewer.html) for that.
@@ -65,5 +65,6 @@ Pull requests, feature ideas and bug reports are very welcome!
 ## References
 Many thanks to all of authors.
  - [Django on Azure - beyond "hello world"](https://tonybaloney.github.io/posts/django-on-azure-beyond-hello-world.html)
+ - [Tutorial: Deploy a Django web app with PostgreSQL using the Azure portal](https://docs.microsoft.com/ja-jp/azure/developer/python/tutorial-python-postgresql-app-portal)
  - [DjangoにPostgreSQLを適用する](https://qiita.com/shigechioyo/items/9b5a03ceead6e5ec87ec)
  

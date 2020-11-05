@@ -5,20 +5,24 @@ import uuid
 from django.core.exceptions import ValidationError
 from django.db import models
 
-FILE_SIZE_LIMIT = 30 * 1024 * 1024
+MAX_MEDIA_COUNT = 100
+
+MEDIA_LIST_SIZE = len("2147483647 ") * MAX_MEDIA_COUNT
+
+MEDIA_FILE_SIZE_LIMIT = 30 * (1024 * 1024)
 
 
-def generate_filename(_, filename):
-    return "%s.%s" % (uuid.uuid4(), filename.split(".")[-1].lower())
+def media_filename(_, filename):
+    return "{}.{}".format(uuid.uuid4(), filename.split(".")[-1].lower())
 
 
-def filesize_validator(file):
+def media_validator(file):
 
-    if file.size > FILE_SIZE_LIMIT:
+    if file.size > MEDIA_FILE_SIZE_LIMIT:
 
         raise ValidationError(
             "File too large. Size should not exceed {} MB.".format(
-                FILE_SIZE_LIMIT / (1024 * 1024)
+                MEDIA_FILE_SIZE_LIMIT / (1024 * 1024)
             )
         )
 
@@ -26,7 +30,7 @@ def filesize_validator(file):
 class Media(models.Model):
     updated = models.DateTimeField(auto_now=True)
     content = models.FileField(
-        blank=False, upload_to=generate_filename, validators=[filesize_validator]
+        blank=False, upload_to=media_filename, validators=[media_validator]
     )
     ext = models.CharField(blank=False, max_length=10)
     source = models.CharField(blank=False, max_length=100)
@@ -35,14 +39,17 @@ class Media(models.Model):
 
 class Logic(models.Model):
     name = models.CharField(blank=False, max_length=50)
-    param = models.CharField(blank=False, default="default_logic", max_length=100)
+    param = models.CharField(
+        blank=False, default="logic=default shuffle", max_length=1000
+    )
+    note = models.TextField(blank=True, max_length=1000)
     start_prompt = models.TextField(blank=True, max_length=1000)
     finish_prompt = models.TextField(blank=True, max_length=1000)
-    interval = models.IntegerField(default=5)
+    interval = models.IntegerField(blank=False, default=5)
     media_ext = models.CharField(blank=False, default="*", max_length=50)
     media_tag = models.CharField(blank=False, default="*", max_length=1000)
-    media_list = models.CharField(blank=True, max_length=8000)
-    media_count = models.IntegerField(default=0)
+    media_list = models.CharField(blank=True, max_length=MEDIA_LIST_SIZE)
+    media_count = models.IntegerField(blank=False, default=0)
     state = models.TextField(blank=True, max_length=1000)
 
     def __str__(self):

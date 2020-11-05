@@ -4,8 +4,8 @@
 - Application Server is Azure App Service
     - Connection : Client browser -> App Service (nginx -> gunicorn -> django)
     - All static files are inside the app service local file system using whitenoise middlwware.
-- Database Server is Azure Database Service for PostgreSQL
-    - Connection : App Service -> Database service (PostgerSQL)
+- Database Server is Azure Cosmos DB (or Database Service for PostgreSQL)
+    - Connection : App Service -> CosmosDB (or Database Service for PostgerSQL)
     - All objects defined by models except media files are stored here.
 - Blob storage is Azure Blob Storage Service
     - Connection : Client browser -> Blob Storage.
@@ -13,13 +13,19 @@
 - Code repository is GitHub
     - Deployment : Automated using Github Actions.
 
-![architecture](architecture.png)
-
----
+Note that since alpha-3, the database has changed from PostgreSQL to CosmosDB from running costs point of view. but as references information, descriptions regarded to PostgreSQL is still here.
 
 ## Setup account
  1. Create your Azure Account, Subscription and Resource Group. 
  
+## Setup Azure Cosmos DB
+1. Create Cosmos DB account. (e.g. fuga)
+    - API : Azure Cosmos DB for MongoDB API
+    - Version : 3.6
+    - Connectivity method : Public endpoint
+    - Allow access from Azure Porta; : Allow
+    - Allow access from my IP : Deny (or Allow if you try to use with local dev instance)
+
 ## Setup Azure Database Service
 1. Setup PostgreSQL service instance.
     - Connectivity method : Public access.
@@ -57,32 +63,44 @@
     - HTTP Vesion : 1.1
     - HTTPS Only : on
     - Minimum TLS Version : 1.2
-1. Add application settings as follows.
+
+1. Add application settings as follows (for Django)
+    - DEBUG : True (will change to False later soon)
+
+1. Add application settings as follows (for Cosmos DB)
+    - DB_ENGINE : AZURE_COSMOS (see [settings.py](pbl/settings.py))    
+    - DB_HOST : db url (e.g. fuga.mongo.cosmos.azure.com)
+    - DB_NAME : r3
+    - DB_USER : account name (e.g. fuga)
+    - DB_PASSWORD : account key (you can get it from the console)
+    - DB_PORT : 10255
+
+1. Add application settings as follows (for PostgreSQL:obsolated)
     - DB_ENGINE : POSTGRESQL (see [settings.py](pbl/settings.py))
     - DB_HOST : db url (e.g. hoge.postgres.database.azure.com)
     - DB_NAME : r3
     - DB_USER : db admin name (e.g. psqladmin)
     - DB_PASSWORD : db admin password
     - DB_PORT : 5432
+
+1. Add application settings as follows (for Azure BLOB)
     - MEDIA_STORAGE : AZURE_BLOB (see [settings.py](pbl/settings.py))
     - AZURE_ACCOUNT_NAME : storage account name (e.g. hogestorages)
     - AZURE_CUSTOM_DOMAIN : storage custom domain (e.g. hogestorages.blob.core.windows.net)
     - AZURE_MEDIA_CONTAINER : storage container name (e.g. hoge-container)
-    - AZURE_STORAGE_KEY : storage key
+    - AZURE_STORAGE_KEY : storage key (you can get it from the console)
     - ALLOWED_HOSTS : application url (e.g. hoge.azurewebsites.net)
-    - DEBUG : True (will change to False later soon)
+
 1. Configure automatic deployment from Github to Azure App Service using GitHub Actions.
 1. To setup database and application admin, start app service and connect that via ssh from Azure Console. Then executes some commands as below. Please note that ssh would not work if Debug is "False". .
     ```
     # pip install -r requirements
     # manage check
-    # manage makemigrattions
-    # manage migrate r3
+    # manage makemigrattions r3
+    # manage migrate
     # manage createsuperuser
     ```
 1. Change Debug to False and restart the service.
-
----
 
 ## Note
 1. To improve system overall performance, use smart cache mechanism in both Django and Azure.

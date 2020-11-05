@@ -2,12 +2,11 @@
 
 import datetime
 import json
-import os
 import random
 
 from django.http import Http404
 
-from .models import Media
+from .models import MAX_MEDIA_COUNT, Media
 
 
 def prep(logic):
@@ -34,10 +33,10 @@ def prep(logic):
     logic.save()
 
     # paramで指定されている実装を呼び出します.
-    if "default_logic" in param_list:
+    if "logic=default" in param_list:
         default_prep(logic, param_list)
 
-    elif "dynamic_logic" in param_list:
+    elif "logic=dynamic" in param_list:
         dynamic_prep(logic, param_list)
 
     else:
@@ -71,10 +70,10 @@ def get_content(trial, seq):
     param_list = logic.param.split()
 
     # paramで指定されているget_contentを呼びだします.
-    if "default_logic" in param_list:
+    if "logic=default" in param_list:
         return default_get_content(trial, seq, param_list)
 
-    elif "dynamic_logic" in param_list:
+    elif "logic=dynamic" in param_list:
         return dynamic_get_content(trial, seq, param_list)
 
     # 知らないLogicの名前が指定されたらエラーです.
@@ -89,12 +88,10 @@ def add_state(logic, message):
         message (str): 追記したいメッセージ.
     """
 
-    state = logic.state
-    state += str(datetime.datetime.today())
-    state += " "
-    state += message
-    state += os.linesep
-    logic.state = state
+    # 新しい行を追記します.
+    logic.state += "{} {}\n".format(str(datetime.datetime.today()), message)
+
+    # データベースに書き込みます.
     logic.save()
 
 
@@ -108,14 +105,12 @@ def default_prep(logic, param_list):
         param_list (list): パラメータのリスト.
     """
 
-    # ひとつのLogicに入る最大のMediaの個数です.
-    MAX_MEDIA_COUNT = 100
-
     # 実行開始の情報をstateに書いておきます.
     add_state(logic, "default_prep started.")
 
     # 対象となるMediaをすべて新しい順に取得します.
-    media_all = Media.objects.all().order_by("updated").reverse()
+    # 本来は"updated"を使うべきですが、Mongo(Cosmos)でエラーになるのでidで近似しています...
+    media_all = Media.objects.all().order_by("id").reverse()
 
     # 表示対象として指定されている拡張子のリストを取得します.
     ext_list = logic.media_ext.split()

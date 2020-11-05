@@ -1,5 +1,7 @@
 """ Forms """
 
+import random
+
 from django import forms
 
 from .models import Trial
@@ -17,6 +19,15 @@ class MainForm(forms.ModelForm):
             raise forms.ValidationError("Please ask to the team member.")
 
         return room
+
+    def clean_nickname(self):
+        nickname = str(self.cleaned_data.get("nickname")).strip()
+
+        if len(nickname) == 0:
+            # Gennerating anonymous name. use uuid instead if you need a perfect solution.
+            nickname = "anonymous-" + str(random.randint(10000, 99999))
+
+        return nickname
 
 
 class FinishForm(forms.ModelForm):
