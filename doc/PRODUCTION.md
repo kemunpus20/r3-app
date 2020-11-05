@@ -23,7 +23,7 @@ Note that since alpha-3, the database has changed from PostgreSQL to CosmosDB fr
     - API : Azure Cosmos DB for MongoDB API
     - Version : 3.6
     - Connectivity method : Public endpoint
-    - Allow access from Azure Porta; : Allow
+    - Allow access from Azure Portal : Allow (+ Accept connections from within public Azure datacenters)
     - Allow access from my IP : Deny (or Allow if you try to use with local dev instance)
 
 ## Setup Azure Database Service
