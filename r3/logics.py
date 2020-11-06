@@ -126,7 +126,11 @@ def media_prep(logic, param_list):
     # すべてのMediaを順番に処理していきます.
     for media in media_all:
 
-        # 拡張子をチェックします.
+        # 拡張子がtxtの場合はこのLogicでは処理しません.
+        if media.ext == "txt":
+            continue
+
+        # 拡張子が条件に合致しているかチェックします.
         if ("*" in ext_list) or (media.ext in ext_list):
             matched = False
 
