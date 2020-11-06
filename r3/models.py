@@ -40,7 +40,7 @@ class Media(models.Model):
 class Logic(models.Model):
     name = models.CharField(blank=False, max_length=50)
     param = models.CharField(
-        blank=False, default="logic=default shuffle", max_length=1000
+        blank=False, default="logic=media shuffle", max_length=1000
     )
     note = models.TextField(blank=True, max_length=1000)
     start_prompt = models.TextField(blank=True, max_length=1000)

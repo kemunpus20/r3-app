@@ -13,7 +13,7 @@
 - Code repository is GitHub
     - Deployment : Automated using Github Actions.
 
-Note that since alpha-3, the database has changed from PostgreSQL to CosmosDB from running costs point of view. but as references information, descriptions regarded to PostgreSQL is still here.
+Note that since alpha-3, the database has changed from PostgreSQL to CosmosDB. But as references information, descriptions regarded to PostgreSQL is still here.
 
 ## Setup account
  1. Create your Azure Account, Subscription and Resource Group. 
@@ -24,9 +24,9 @@ Note that since alpha-3, the database has changed from PostgreSQL to CosmosDB fr
     - Version : 3.6
     - Connectivity method : Public endpoint
     - Allow access from Azure Portal : Allow (+ Accept connections from within public Azure datacenters)
-    - Allow access from my IP : Deny (or Allow if you try to use with local dev instance)
+    - Allow access from my IP : Deny (or Allow if you try to use with local development instance)
 
-## Setup Azure Database Service
+## Setup Azure Database Service (obsolated)
 1. Setup PostgreSQL service instance.
     - Connectivity method : Public access.
     - PostgreSQL Version : 11

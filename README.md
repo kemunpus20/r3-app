@@ -8,7 +8,7 @@ Simple web-based system to support various internal hypothetical-based experimen
 - To host of experiment - Read this document to develop and/or deploy this system in your own environment.
 
 ## System requirements
-- Server : [Python](https://www.python.org/) 3.7 and [Django](https://www.djangoproject.com/) 3.1. Depended modulses are described in [requirements.txt](requirements.txt).
+- Server : [Python](https://www.python.org/) 3.7 and [Django](https://www.djangoproject.com/) 3.0. Depended modulses are described in [requirements.txt](requirements.txt).
 - Client : Modern browser that supports JavaScript and HTML5. Chrome, Firefox, and New Edge would be fine. I am very sorry that IE11 does not work correctly due to lack of CSS support.
 
 ## Restrictions and known issues
@@ -17,7 +17,6 @@ Simple web-based system to support various internal hypothetical-based experimen
 1. Maximum size of media file should be less than 30M bytes, and maximum number of medias that can be assigned to one logic is 100. Modify [models.py](r3/models.py) if you have to change this limitation.
 1. User can anytime use any browser buttons like a "back" and "reload". There is no impact to the system from data consistency point of view, but it might be confused from experiment participant point of view.
 1. Experiment host has to update every Logics when new Media file has been added. At this stage, this process called "Prep" is implemented as a part of synchronous HTTP handler. So perhaps client browser will be timed-out in "Prep" process if bunch of media files registererd in the system. Data stored back-end will be updated successfully even if client is timed-out. So I think this is not a critical issue at the moment.
-1. Feature to showing some keyword as a hint instead of image or movie is not implemented yet. Please concider to use a tool named [RandomViwer.html](local_tool/RandomViewer.html) for that.
 
 ## Install to your development environment
 If you already had a development environment with Python 3, following steps (as like general Django application) will installs the system to your environment, and just starts it on 'Debug' mode.
@@ -34,7 +33,7 @@ Now you can acccess http://localhost:8000 to get application main screen and htt
 ### Setup data for your test drive
 To prepare minimam data, follow below steps in the administration application.
  1. Add your several media files (should be jpg or mp4) using "Media" menu.
- 1. Create your own experiment logic using "Logic" menu. Be sure that "default_logic" might be in the param field.
+ 1. Create your own experiment logic using "Logic" menu. Be sure that "logic=media" might be in the param field.
  1. "Prep" your logic using "Prep selected logics" menu in the Logic list. This operation assigns relavant media files to the logic.
  1. Launch main application with http://localhost:8000 and try to start your experiment using the logic you created.
 
@@ -46,7 +45,6 @@ I will try to handle following issues if I have a time...
 1. Developing a new logic that uses participant specified keywords, and retrieves media files from the internet automatically. I have an idea to use [MediaWiki](https://www.mediawiki.org/) REST API to getting relavant "safe and free" movie files.
 1. Isolate "Prep" task from Django main thread to supports more complecated and time-consuming algorithms in the logic module. Using [django-background-tasks](https://django-background-tasks.readthedocs.io/) could be a solution. may be a custom startup script for production environment also needed, and then "Prep" might be start automatically.
 1. Obviously current design of Logic.media_list is neither safety nor scalable. So to reconsider data relationship between Logic and Trial once again.
-1. To add a feature to supports text (keywords) as a Media object.
 1. To add more logger for trouble shooting in production environment.
 1. To add more comments based on the Python docstrings style.
 1. There is no test code. Yes, I understand, it's unbelievable in 2020. I have to write some tests to cover vital part of this system. And someday to concider to CI and CD if the system improved continually.
