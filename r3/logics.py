@@ -4,6 +4,7 @@ import datetime
 import json
 import random
 
+from django.core.cache import cache
 from django.http import Http404
 
 from .models import MAX_MEDIA_COUNT, Media
@@ -222,8 +223,7 @@ def media_get_content(trial, seq, param_list):
     raise Http404
 
 
-# テキストを保持するリストです.
-text_list = []
+TEXT_CACHE_NAME = "text-cache"
 
 
 def text_prep(logic, param_list):
@@ -239,8 +239,7 @@ def text_prep(logic, param_list):
     add_state(logic, "text_prep started.")
 
     # テキストリストをクリアします.
-    global text_list
-    text_list.clear
+    text_list = []
 
     # 対象となるMediaをすべて取得します.
     media_all = Media.objects.all()
@@ -275,6 +274,9 @@ def text_prep(logic, param_list):
 
     # 採用されたMediaの個数もセットします.
     logic.media_count = max_index
+
+    # キャッシュにリストを保存します.
+    cache.set(TEXT_CACHE_NAME, text_list, None)
 
     # 実行終了の情報をstateに書いておきます.
     add_state(logic, "text_prep finished.")
@@ -311,6 +313,9 @@ def text_get_content(trial, seq, param_list):
 
         # 表示すべきデータが一個もない場合はエラーにはせずにメッセージを出すようにします.
         return json.dumps({"ext": "txt", "url": "No data to show"})
+
+    # キャッシュからリストを撮ってきます.
+    text_list = cache.get(TEXT_CACHE_NAME)
 
     # seq番目のTextsをとってきます.
     text = text_list[int(index_list[int(seq) % index_count])]

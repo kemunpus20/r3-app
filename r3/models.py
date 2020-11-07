@@ -46,6 +46,7 @@ class Logic(models.Model):
     start_prompt = models.TextField(blank=True, max_length=1000)
     finish_prompt = models.TextField(blank=True, max_length=1000)
     interval = models.IntegerField(blank=False, default=5)
+    duration = models.IntegerField(blank=False, default=30)
     media_ext = models.CharField(blank=False, default="*", max_length=50)
     media_tag = models.CharField(blank=False, default="*", max_length=1000)
     media_list = models.CharField(blank=True, max_length=MEDIA_LIST_SIZE)

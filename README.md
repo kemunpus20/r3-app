@@ -25,6 +25,7 @@ $ pip instll -r requirements.txt
 $ ./manage.py check
 $ ./manage.py makemigrations
 $ ./manage.py migrate
+$ ./manage.py createcachetable
 $ ./manage.py createsuperuser
 $ ./manage.py runserver
 ```

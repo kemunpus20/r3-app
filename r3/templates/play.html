@@ -3,6 +3,7 @@
 {% block head %}
 <script type="text/javascript">
     const interval = Number("{{trial.logic.interval}}") * 1000
+    const duration = Number("{{trial.logic.duration}}") * 1000
 
     let counter = null;
     let text = null;
@@ -43,8 +44,14 @@
 
     function onInterval() {
         const now = new Date().getTime();
-
         const diff = now - start;
+
+        if (duration > 0 && duration < diff) {
+            location.href = '../finish/{{trial.pk}}';
+
+            return;
+        }
+
         const min = Math.floor(diff / (1000 * 60));
         const sec = Math.floor(diff / 1000) - (min * 60);
 

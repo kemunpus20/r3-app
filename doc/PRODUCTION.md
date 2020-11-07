@@ -95,10 +95,11 @@ Note that since alpha-3, the database has changed from PostgreSQL to CosmosDB. B
 1. To setup database and application admin, start app service and connect that via ssh from Azure Console. Then executes some commands as below. Please note that ssh would not work if Debug is "False". .
     ```
     # pip install -r requirements
-    # manage check
-    # manage makemigrattions r3
-    # manage migrate
-    # manage createsuperuser
+    # ./manage.py check
+    # ./manage.py makemigrattions r3
+    # ./manage.py migrate
+    $ ./manage.py createcachetable    
+    # ./manage.py createsuperuser
     ```
 1. Change Debug to False and restart the service.
 
