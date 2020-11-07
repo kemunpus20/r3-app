@@ -14,6 +14,10 @@ h1 {
     background-color: #334268;
 }
 
+h3 {
+    margin-left: 1em;
+}
+
 div.body {
     margin: 2rem;
     line-height: 2rem;
@@ -22,4 +26,24 @@ div.body {
 a {
     font-weight: bold;
     color: #F0F4F8;
+}
+
+div.button {
+    text-align: center;
+}
+
+button {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    width: 50%;
+    height: 3rem;
+    font-size: large;
+    color: #F0F4F8;
+    background-color: #627D98;
+    border-color: #627D98;
+}
+
+div.center {
+    text-align: center;
+    font-size: x-large;
 }

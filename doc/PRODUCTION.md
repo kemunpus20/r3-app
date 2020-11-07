@@ -92,13 +92,13 @@ Note that since alpha-3, the database has changed from PostgreSQL to CosmosDB. B
     - ALLOWED_HOSTS : application url (e.g. hoge.azurewebsites.net)
 
 1. Configure automatic deployment from Github to Azure App Service using GitHub Actions.
-1. To setup database and application admin, start app service and connect that via ssh from Azure Console. Then executes some commands as below. Please note that ssh would not work if Debug is "False". .
+1. To setup database and application admin, start app service and connect that via ssh from Azure Console. Then executes some commands as below.
     ```
+    # cd site/wwwroot
     # pip install -r requirements
     # ./manage.py check
     # ./manage.py makemigrattions r3
     # ./manage.py migrate
-    $ ./manage.py createcachetable    
     # ./manage.py createsuperuser
     ```
 1. Change Debug to False and restart the service.
