@@ -246,8 +246,8 @@ def text_prep(logic, param_list):
         if media.ext == "txt":
 
             # 拡張子がtxtなら読み込んでテキストのリストに追記します.
-            with media.content.open("r") as text_file:
-                lines = text_file.read().splitlines()
+            with media.content.open(mode="rb") as text_file:
+                lines = text_file.read().decode("utf-8").splitlines()
                 text_file.close()
                 text_list.extend(lines)
 

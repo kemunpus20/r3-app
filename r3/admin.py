@@ -73,7 +73,7 @@ class TrialAdmin(ExportActionMixin, admin.ModelAdmin):
             if len(comment) == 0:
                 comment = "NO-COMMENT"
 
-            comment_list = comment.split()
+            comment_list = comment.splitlines()
 
             for c in comment_list:
                 data += '"{}","{}","{}","{}","{}","{}"'.format(
