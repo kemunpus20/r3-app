@@ -1,13 +1,13 @@
 """ Admin """
 
 import django
-from django.contrib import admin
+from django.contrib import admin, messages
 from import_export import resources
 from import_export.admin import ExportActionMixin, ExportMixin
 from import_export.formats import base_formats
 
 from .logics import prep
-from .models import Logic, Media, Trial
+from .models import Logic, Media, Trial, Work
 
 admin.site.unregister(django.contrib.auth.models.User)
 admin.site.unregister(django.contrib.auth.models.Group)
@@ -19,10 +19,12 @@ class LogicAdmin(ExportMixin, admin.ModelAdmin):
     formats = [base_formats.CSV, base_formats.XLSX, base_formats.HTML]
     actions = ["prep_selected_logics"]
 
-    def prep_selected_logics(self, _, queryset):
+    def prep_selected_logics(self, request, queryset):
 
         for logic in queryset:
             prep(logic)
+
+        messages.info(request, "'Prep' successfully done.")
 
 
 @admin.register(Media)
@@ -55,4 +57,47 @@ class TrialResource(resources.ModelResource):
 class TrialAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = ("id", "started", "finished", "room", "nickname", "logic")
     formats = [base_formats.CSV, base_formats.XLSX, base_formats.HTML]
+    actions = ["merge_selected_trials"]
     resource_class = TrialResource
+
+    def merge_selected_trials(self, request, queryset):
+        WORK_NAME = "merged trials"
+        work = Work.objects.create()
+        work.name = WORK_NAME
+        data = '"Room","Nickname","Logic.note","Logic.name","Logic.duration","Comment"'
+        data += "\n"
+
+        for trial in queryset:
+            comment = trial.comment
+
+            if len(comment) == 0:
+                comment = "NO-COMMENT"
+
+            comment_list = comment.split()
+
+            for c in comment_list:
+                data += '"{}","{}","{}","{}","{}","{}"'.format(
+                    trial.room,
+                    trial.nickname,
+                    trial.logic.note,
+                    trial.logic.name,
+                    trial.logic.duration,
+                    c,
+                )
+                data += "\n"
+
+        work.data = data
+        work.save()
+
+        messages.info(
+            request,
+            "'Merge' successfully done. see latest data named '{}' in 'Works' Table.".format(
+                WORK_NAME
+            ),
+        )
+
+
+@admin.register(Work)
+class WorkAdmin(ExportMixin, admin.ModelAdmin):
+    list_display = ("id", "updated", "name")
+    formats = [base_formats.CSV, base_formats.XLSX, base_formats.HTML]

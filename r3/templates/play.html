@@ -75,20 +75,20 @@
                 text.innerHTML = "API Error : " + response.status + " (@" + seq + ")<br>may be you have to re-run prep?";
                 text.style.display = "block";
 
-            }).then((data) => {
+            }).then((json_response) => {
 
-                if (data.ext == "jpg" || data.ext == "png") {
-                    image.src = data.url;
+                if (json_response.type == "jpg" || json_response.type == "png") {
+                    image.src = json_response.data;
 
-                } else if (data.ext == "mp4" || data.ext == "webm") {
-                    video.src = data.url;
+                } else if (json_response.type == "mp4" || json_response.type == "webm") {
+                    video.src = json_response.data;
 
-                } else if (data.ext == "txt") {
-                    text.innerHTML = data.url;
+                } else if (json_response.type == "txt") {
+                    text.innerHTML = json_response.data;
                     text.style.display = "block";
 
                 } else {
-                    text.innerHTML = "ext [" + data.ext + "] (" + data.url + ") does not support yet.";
+                    text.innerHTML = "type [" + json_response.type + "] (" + json_response.data + ") does not support yet.";
                     text.style.display = "block";
                 }
 

@@ -4,10 +4,9 @@ import datetime
 import json
 import random
 
-from django.core.cache import cache
 from django.http import Http404
 
-from .models import MAX_MEDIA_COUNT, Media
+from .models import MAX_MEDIA_COUNT, Media, Work
 
 
 def prep(logic):
@@ -92,7 +91,7 @@ def add_state(logic, message):
     # 新しい行を追記します.
     logic.state += "{} {}\n".format(str(datetime.datetime.today()), message)
 
-    # データベースに書き込みます.
+    # 結果を書き込みます.
     logic.save()
 
 
@@ -168,7 +167,7 @@ def media_prep(logic, param_list):
     # リストを空白区切りの文字列に展開します.
     media_list_str = " ".join(map(str, media_list))
 
-    # データベースに書き込む値としてセットします.
+    # 書き込む値としてセットします.
     logic.media_list = media_list_str
 
     # 採用されたMediaの個数もセットします.
@@ -176,9 +175,6 @@ def media_prep(logic, param_list):
 
     # 実行終了の情報をstateに書いておきます.
     add_state(logic, "media_prep finished.")
-
-    # データベースに結果を書き込んで終了です.
-    logic.save()
 
 
 def media_get_content(trial, seq, param_list):
@@ -205,25 +201,24 @@ def media_get_content(trial, seq, param_list):
     media_list = logic.media_list.split()
     media_count = len(media_list)
 
+    # 表示すべきデータが一個もない場合はエラーにはせずにメッセージを出すようにします.
     if media_count == 0:
-
-        # 表示すべきデータが一個もない場合はエラーにはせずにメッセージを出すようにします.
-        return json.dumps({"ext": "txt", "url": "No data to show"})
+        return json.dumps({"type": "txt", "data": "No data to show"})
 
     # seq番目のMediaをとってきます.
     media_index = int(seq) % media_count
     media = Media.objects.get(pk=media_list[media_index])
 
+    # Mediaが無事に取れた場合にはjsonを返します.
     if media:
-
-        # Mediaが無事に取れた場合にはjsonを返します.
-        return json.dumps({"ext": media.ext, "url": media.content.url})
+        return json.dumps({"type": media.ext, "data": media.content.url})
 
     # Mediaが見つからなかった場合は404を返します.
     raise Http404
 
 
-TEXT_CACHE_NAME = "text-cache"
+# Workにデータを保持するための名前です.
+TEXT_LOGIC_NAME = "text-logic-cache:{}"
 
 
 def text_prep(logic, param_list):
@@ -251,9 +246,9 @@ def text_prep(logic, param_list):
         if media.ext == "txt":
 
             # 拡張子がtxtなら読み込んでテキストのリストに追記します.
-            with media.content.open("r") as f:
-                lines = f.read().splitlines()
-                f.close()
+            with media.content.open("r") as text_file:
+                lines = text_file.read().splitlines()
+                text_file.close()
                 text_list.extend(lines)
 
     # インデックスを保持するリストを作成します.
@@ -269,20 +264,32 @@ def text_prep(logic, param_list):
     # リストを空白区切りの文字列に展開します.
     media_list_str = " ".join(map(str, index_list[:max_index]))
 
-    # データベースに書き込む値としてセットします.
+    # 採用されたMediaのリストをセットします.
     logic.media_list = media_list_str
 
     # 採用されたMediaの個数もセットします.
     logic.media_count = max_index
 
-    # キャッシュにリストを保存します.
-    cache.set(TEXT_CACHE_NAME, text_list, None)
+    # Workにリストを保持する準備をします.
+    name = TEXT_LOGIC_NAME.format(logic.pk)
+    work = None
+
+    try:
+        # WorkからObjectを持ってきます.
+        work = Work.objects.get(name=name)
+
+    except Work.DoesNotExist:
+
+        # 存在しなかった場合は新規に作成します.
+        work = Work.objects.create()
+        work.name = name
+
+    # Workにリストを保存します.
+    work.data = " ".join(map(str, text_list))
+    work.save()
 
     # 実行終了の情報をstateに書いておきます.
     add_state(logic, "text_prep finished.")
-
-    # データベースに結果を書き込んで終了です.
-    logic.save()
 
 
 def text_get_content(trial, seq, param_list):
@@ -309,16 +316,17 @@ def text_get_content(trial, seq, param_list):
     index_list = logic.media_list.split()
     index_count = len(index_list)
 
+    # 表示すべきデータが一個もない場合はエラーにはせずにメッセージを出すようにします.
     if index_count == 0:
+        return json.dumps({"type": "txt", "data": "No data to show"})
 
-        # 表示すべきデータが一個もない場合はエラーにはせずにメッセージを出すようにします.
-        return json.dumps({"ext": "txt", "url": "No data to show"})
-
-    # キャッシュからリストを撮ってきます.
-    text_list = cache.get(TEXT_CACHE_NAME)
+    # Workからリストを撮ってきます.
+    name = TEXT_LOGIC_NAME.format(logic.pk)
+    work = Work.objects.get(name=name)
+    text_list = work.data.split()
 
     # seq番目のTextsをとってきます.
     text = text_list[int(index_list[int(seq) % index_count])]
 
     # jsonを返します.
-    return json.dumps({"ext": "txt", "url": text})
+    return json.dumps({"type": "txt", "data": text})

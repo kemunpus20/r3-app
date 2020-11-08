@@ -7,9 +7,11 @@ from django.db import models
 
 MAX_MEDIA_COUNT = 100
 
-MEDIA_LIST_SIZE = len("2147483647 ") * MAX_MEDIA_COUNT
+MAX_MEDIA_LIST_SIZE = len("2147483647 ") * MAX_MEDIA_COUNT
 
-MEDIA_FILE_SIZE_LIMIT = 30 * (1024 * 1024)
+MAX_MEDIA_FILE_SIZE_LIMIT = 30 * (1024 * 1024)
+
+MAX_WORK_DATA_SIZE = 1024 * 1024
 
 
 def media_filename(_, filename):
@@ -18,11 +20,11 @@ def media_filename(_, filename):
 
 def media_validator(file):
 
-    if file.size > MEDIA_FILE_SIZE_LIMIT:
+    if file.size > MAX_MEDIA_FILE_SIZE_LIMIT:
 
         raise ValidationError(
             "File too large. Size should not exceed {} MB.".format(
-                MEDIA_FILE_SIZE_LIMIT / (1024 * 1024)
+                MAX_MEDIA_FILE_SIZE_LIMIT / (1024 * 1024)
             )
         )
 
@@ -49,7 +51,7 @@ class Logic(models.Model):
     duration = models.IntegerField(blank=False, default=30)
     media_ext = models.CharField(blank=False, default="*", max_length=50)
     media_tag = models.CharField(blank=False, default="*", max_length=1000)
-    media_list = models.CharField(blank=True, max_length=MEDIA_LIST_SIZE)
+    media_list = models.CharField(blank=True, max_length=MAX_MEDIA_LIST_SIZE)
     media_count = models.IntegerField(blank=False, default=0)
     state = models.TextField(blank=True, max_length=1000)
 
@@ -65,3 +67,9 @@ class Trial(models.Model):
     nickname = models.CharField(blank=True, max_length=20)
     keyword = models.CharField(blank=True, max_length=1000)
     comment = models.TextField(blank=True, max_length=1000)
+
+
+class Work(models.Model):
+    updated = models.DateTimeField(auto_now=True)
+    name = models.CharField(blank=False, max_length=20)
+    data = models.TextField(blank=True, max_length=MAX_WORK_DATA_SIZE)
