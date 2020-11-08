@@ -43,13 +43,15 @@ button {
     border-color: #627D98;
 }
 
-div.center {
+div.main-message {
     text-align: center;
-    font-size: large;
+    font-size: x-large;
 }
 
-img.center {
-    width: 25%;
+div.sub-message {
+    text-align: center;
+    font-size: medium;
+    margin-bottom: 4em;
 }
 
 @media screen and (max-width: 480px) {
