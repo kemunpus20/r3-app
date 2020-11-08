@@ -6,7 +6,7 @@ import random
 
 from django.http import Http404
 
-from .models import MAX_MEDIA_COUNT, Media, Work
+from .models import MAX_MEDIA_COUNT, Media, Temp
 
 
 def prep(logic):
@@ -217,7 +217,7 @@ def media_get_content(trial, seq, param_list):
     raise Http404
 
 
-# Workにデータを保持するための名前です.
+# Tempにデータを保持するための名前です.
 TEXT_LOGIC_NAME = "text-logic-cache:{}"
 
 
@@ -270,23 +270,23 @@ def text_prep(logic, param_list):
     # 採用されたMediaの個数もセットします.
     logic.media_count = max_index
 
-    # Workにリストを保持する準備をします.
+    # Tempにリストを保持する準備をします.
     name = TEXT_LOGIC_NAME.format(logic.pk)
-    work = None
+    temp = None
 
     try:
-        # WorkからObjectを持ってきます.
-        work = Work.objects.get(name=name)
+        # TempからObjectを持ってきます.
+        temp = Temp.objects.get(name=name)
 
-    except Work.DoesNotExist:
+    except Temp.DoesNotExist:
 
         # 存在しなかった場合は新規に作成します.
-        work = Work.objects.create()
-        work.name = name
+        temp = Temp.objects.create()
+        temp.name = name
 
-    # Workにリストを保存します.
-    work.content = " ".join(map(str, text_list))
-    work.save()
+    # Tempにリストを保存します.
+    temp.content = " ".join(map(str, text_list))
+    temp.save()
 
     # 実行終了の情報をstateに書いておきます.
     add_state(logic, "text_prep finished.")
@@ -320,10 +320,10 @@ def text_get_content(trial, seq, param_list):
     if index_count == 0:
         return json.dumps({"type": "txt", "data": "No data to show"})
 
-    # Workからリストを撮ってきます.
+    # Tempからリストを撮ってきます.
     name = TEXT_LOGIC_NAME.format(logic.pk)
-    work = Work.objects.get(name=name)
-    text_list = work.content.split()
+    temp = Temp.objects.get(name=name)
+    text_list = temp.content.split()
 
     # seq番目のTextsをとってきます.
     text = text_list[int(index_list[int(seq) % index_count])]

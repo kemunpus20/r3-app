@@ -7,7 +7,7 @@ from import_export.admin import ExportActionMixin, ExportMixin
 from import_export.formats import base_formats
 
 from .logics import prep
-from .models import Logic, Media, Trial, Work, Temp
+from .models import Logic, Media, Trial, Temp
 
 admin.site.unregister(django.contrib.auth.models.User)
 admin.site.unregister(django.contrib.auth.models.Group)
@@ -61,9 +61,9 @@ class TrialAdmin(ExportActionMixin, admin.ModelAdmin):
     resource_class = TrialResource
 
     def merge_selected_trials(self, request, queryset):
-        WORK_NAME = "merged trials"
-        work = Work.objects.create()
-        work.name = WORK_NAME
+        TEMP_NAME = "merged trials"
+        temp = Temp.objects.create()
+        temp.name = TEMP_NAME
         data = '"Room","Nickname","Logic.note","Logic.name","Logic.duration","Comment"'
         data += "\n"
 
@@ -86,21 +86,15 @@ class TrialAdmin(ExportActionMixin, admin.ModelAdmin):
                 )
                 data += "\n"
 
-        work.content = data
-        work.save()
+        temp.content = data
+        temp.save()
 
         messages.info(
             request,
-            "'Merge' successfully done. see latest data named '{}' in 'Works' Table.".format(
-                WORK_NAME
+            "'Merge' successfully done. see latest data named '{}' in 'Temps' Table.".format(
+                TEMP_NAME
             ),
         )
-
-
-@admin.register(Work)
-class WorkAdmin(ExportMixin, admin.ModelAdmin):
-    list_display = ("id", "updated", "name")
-    formats = [base_formats.CSV, base_formats.XLSX, base_formats.HTML]
 
 
 @admin.register(Temp)
