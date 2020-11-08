@@ -7,7 +7,7 @@ from import_export.admin import ExportActionMixin, ExportMixin
 from import_export.formats import base_formats
 
 from .logics import prep
-from .models import Logic, Media, Trial, Temp
+from .models import Logic, Media, Temp, Trial
 
 admin.site.unregister(django.contrib.auth.models.User)
 admin.site.unregister(django.contrib.auth.models.Group)
@@ -76,15 +76,17 @@ class TrialAdmin(ExportActionMixin, admin.ModelAdmin):
             comment_list = comment.splitlines()
 
             for c in comment_list:
-                data += '"{}","{}","{}","{}","{}","{}"'.format(
-                    trial.room,
-                    trial.nickname,
-                    trial.logic.note,
-                    trial.logic.name,
-                    trial.logic.duration,
-                    c,
-                )
-                data += "\n"
+
+                if len(c) > 0:
+                    data += '"{}","{}","{}","{}","{}","{}"'.format(
+                        trial.room,
+                        trial.nickname,
+                        trial.logic.note,
+                        trial.logic.name,
+                        trial.logic.duration,
+                        c,
+                    )
+                    data += "\n"
 
         temp.content = data
         temp.save()
