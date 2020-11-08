@@ -53,12 +53,6 @@ div.space {
     border: 0;
 }
 
-div.version {
-    padding: 0.2rem 2rem 0.2rem 2rem;
-    text-align: right;
-    font-size: x-small;
-}
-
 div.body {
     padding: 0.2rem 2rem 0.2rem 2rem;
 }
@@ -103,6 +97,7 @@ select {
 
 textarea {
     width: 100%;
+    box-sizing: border-box;
 }
 
 div.button {
@@ -176,20 +171,34 @@ video.content {
     body {
         overflow: auto;
     }
+    div.header {
+        padding: 0.7rem 1rem 0.7rem 1rem;
+    }
+    div.message {
+        text-align: center;
+    }
     div.data {
         display: flex;
         line-height: 1rem;
         margin-bottom: 0.1rem;
     }
     div.name {
+        padding: 0.5rem;
         flex: 1;
     }
     div.value {
+        padding: 0.4rem;
         flex: 4;
         margin-right: 0;
     }
     div.button {
         text-align: center;
+    }
+    th {
+        padding: 0.2rem;
+    }
+    td {
+        padding: 0.2rem;
     }
     button {
         width: 6rem;

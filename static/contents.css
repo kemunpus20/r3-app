@@ -33,10 +33,10 @@ div.button {
 }
 
 button {
+    line-height: 2em;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     width: 50%;
-    height: 3rem;
     font-size: large;
     color: #F0F4F8;
     background-color: #627D98;
@@ -45,5 +45,23 @@ button {
 
 div.center {
     text-align: center;
-    font-size: x-large;
+    font-size: large;
+}
+
+img.center {
+    width: 25%;
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        font-size: small;
+    }
+    h1 {
+        margin: 0;
+        padding: 1rem 1rem 1rem 1rem;
+    }
+    div.body {
+        margin: 1rem;
+        line-height: 1rem;
+    }
 }
