@@ -7,7 +7,7 @@ from import_export.admin import ExportActionMixin, ExportMixin
 from import_export.formats import base_formats
 
 from .logics import prep
-from .models import Logic, Media, Trial, Work
+from .models import Logic, Media, Trial, Work, Temp
 
 admin.site.unregister(django.contrib.auth.models.User)
 admin.site.unregister(django.contrib.auth.models.Group)
@@ -99,5 +99,11 @@ class TrialAdmin(ExportActionMixin, admin.ModelAdmin):
 
 @admin.register(Work)
 class WorkAdmin(ExportMixin, admin.ModelAdmin):
+    list_display = ("id", "updated", "name")
+    formats = [base_formats.CSV, base_formats.XLSX, base_formats.HTML]
+
+
+@admin.register(Temp)
+class TempAdmin(ExportMixin, admin.ModelAdmin):
     list_display = ("id", "updated", "name")
     formats = [base_formats.CSV, base_formats.XLSX, base_formats.HTML]
