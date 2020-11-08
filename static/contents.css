@@ -44,14 +44,15 @@ button {
 }
 
 div.main-message {
+    margin: 2em 0 2em 0;
     text-align: center;
     font-size: x-large;
 }
 
 div.sub-message {
+    margin-bottom: 4em;
     text-align: center;
     font-size: medium;
-    margin-bottom: 4em;
 }
 
 @media screen and (max-width: 480px) {

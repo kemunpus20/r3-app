@@ -1,7 +1,7 @@
 """ Views """
 
 from django.http import Http404, HttpResponse
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 
 from .forms import FinishForm, MainForm
@@ -32,8 +32,8 @@ class FinishView(generic.UpdateView):
     model = Trial
     template_name = "finish.html"
     form_class = FinishForm
-    # success_url = reverse_lazy("r3:main")
-    success_url = "/static/thanks.html"
+    success_url = reverse_lazy("r3:main")
+    # success_url = "/static/thanks.html"
 
 
 def content_handler(request, pk, seq):
