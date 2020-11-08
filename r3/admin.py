@@ -86,7 +86,7 @@ class TrialAdmin(ExportActionMixin, admin.ModelAdmin):
                 )
                 data += "\n"
 
-        work.data = data
+        work.content = data
         work.save()
 
         messages.info(

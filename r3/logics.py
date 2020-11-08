@@ -285,7 +285,7 @@ def text_prep(logic, param_list):
         work.name = name
 
     # Workにリストを保存します.
-    work.data = " ".join(map(str, text_list))
+    work.content = " ".join(map(str, text_list))
     work.save()
 
     # 実行終了の情報をstateに書いておきます.
@@ -323,7 +323,7 @@ def text_get_content(trial, seq, param_list):
     # Workからリストを撮ってきます.
     name = TEXT_LOGIC_NAME.format(logic.pk)
     work = Work.objects.get(name=name)
-    text_list = work.data.split()
+    text_list = work.content.split()
 
     # seq番目のTextsをとってきます.
     text = text_list[int(index_list[int(seq) % index_count])]

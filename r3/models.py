@@ -11,7 +11,7 @@ MAX_MEDIA_LIST_SIZE = len("2147483647 ") * MAX_MEDIA_COUNT
 
 MAX_MEDIA_FILE_SIZE_LIMIT = 30 * (1024 * 1024)
 
-MAX_WORK_DATA_SIZE = 1024 * 1
+MAX_WORK_CONTENT_SIZE = 1024 * 1024
 
 
 def media_filename(_, filename):
@@ -72,4 +72,4 @@ class Trial(models.Model):
 class Work(models.Model):
     updated = models.DateTimeField(auto_now=True)
     name = models.CharField(blank=False, max_length=20)
-    data = models.TextField(blank=True, max_length=MAX_WORK_DATA_SIZE)
+    content = models.TextField(blank=True, max_length=MAX_WORK_CONTENT_SIZE)
