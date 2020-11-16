@@ -23,12 +23,12 @@ Note: Finally I have decided to use the PostgreSQL running on a very small linux
 1. Create linux VM with Ubuntu server.
     Install postgreSQL (and python3 in the case)
     ```
-    sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
+    # sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
     ```
 1. Create account for both linux and postgreSQL.
     ```
-    sudo passwd postgres
-    sudo -u postgres psql
+    # sudo passwd postgres
+    # sudo -u postgres psql
     CREATE DATABASE r3;
     CREATE USER <db admin name> WITH PASSWORD <db admin password>;
     ALTER ROLE <db admin name> SET client_encoding TO 'utf8';
@@ -41,8 +41,8 @@ Note: Finally I have decided to use the PostgreSQL running on a very small linux
 1. Update pg_hba.conf to add host all all 0.0.0.0/0 md5.
 1. Open firewall and restart postgreSQL instance.
     ```
-    sudo iptables -A INPUT -p tcp --dport 5432 -j ACCEPT
-    sudo service postgresql restart
+    # sudo iptables -A INPUT -p tcp --dport 5432 -j ACCEPT
+    # sudo service postgresql restart
     ```
 1. Configure VM instance as more secure.
     - Change restricted source IP address for SSH (TCP/22) from * to your development environment public IP address.
@@ -55,7 +55,7 @@ Note: Finally I have decided to use the PostgreSQL running on a very small linux
 1. Add your client IP to firewall to configure the service using psql cli. Note that I think the cloud shell could be better.
 1. Connect to the service instance.
     ```
-    psql host=<host name> (e.g. hoge.postgres.database.azure.com) port=5432 dbname=<db name> (e.g. postgres) user=<db admin name> (e.g. psqladmin)
+    # psql host=<host name> (e.g. hoge.postgres.database.azure.com) port=5432 dbname=<db name> (e.g. postgres) user=<db admin name> (e.g. psqladmin)
     ```
 1. Create database and db admin account. be sure to use a complex password!
     ```
@@ -114,7 +114,7 @@ Note: Finally I have decided to use the PostgreSQL running on a very small linux
     - DB_PORT : 5432
 
 1. Add application settings as follows (for Cosmos DB)
-    - DB_ENGINE : AZURE_COSMOS (see [settings.py](pbl/settings.py))    
+    - DB_ENGINE : MONGODB (see [settings.py](pbl/settings.py))    
     - DB_HOST : db url (e.g. fuga.mongo.cosmos.azure.com)
     - DB_NAME : r3
     - DB_USER : account name (e.g. fuga)

@@ -21,7 +21,7 @@
         Room:
     </div>
     <div class="value">
-        {{trial.room}}</td>
+        {{trial.room}}
     </div>
 </div>
 <div class="data">
@@ -29,13 +29,13 @@
         Nickname:
     </div>
     <div class="value">
-        {{trial.nickname}}</td>
+        {{trial.nickname}}
     </div>
 </div>
 <div class="prompt">
     {{trial.logic.start_prompt | safe}}
 </div>
-<form action="../play/{{trial.pk}}" method="GET">
+<form method="POST">
     {% csrf_token %}
     <div class="button">
         <button type="submit">Start</button>

@@ -39,6 +39,10 @@
         last = start - interval;
         timer = setInterval(onInterval, 1000 / 2);
 
+        if ("{{trial.logic.param}}".indexOf("comment=inline") != -1) {
+            document.getElementById("comment").style.display = "block";
+        }
+
         onInterval();
     }
 
@@ -47,8 +51,7 @@
         const diff = now - start;
 
         if (duration > 0 && duration < diff) {
-            location.href = '../finish/{{trial.pk}}';
-
+            document.playform.submit();
             return;
         }
 
@@ -116,14 +119,14 @@
 {% endblock %}
 <!-- Body -->
 {% block body %}
-<form action="../finish/{{trial.pk}}" method="GET">
+<form name="playform" method="POST">
     {% csrf_token %}
     <div class="data">
         <div class="name">
             Room:
         </div>
         <div class="value">
-            {{trial.room}}</td>
+            {{trial.room}}
         </div>
     </div>
     <div class="data">
@@ -131,7 +134,7 @@
             Nickname:
         </div>
         <div class="value">
-            {{trial.nickname}}</td>
+            {{trial.nickname}}
         </div>
     </div>
     <div class="data">
@@ -142,11 +145,18 @@
             00:00
         </div>
     </div>
-    <button class="finish" type="submit">Finish</button>
-    <div id="container" class="container">
-        <div id="text" class="content"></div>
-        <img id="image" class="content" />
-        <video id="video" class="content" onloadstart="this.volume=0.0" autoplay muted loop preload="none"></video>
+    <div class="finish">
+        <button class="finish" type="submit">Finish</button>
+    </div>
+    <div class="pane">
+        <div id="comment" class="comment">
+            <textarea class="comment" name="comment" maxlength="1000" id="id_comment" placeholder="Comment : Enter your ideas here"></textarea>
+        </div>
+        <div id="container" class="container">
+            <div id="text" class="content"></div>
+            <img id="image" class="content" />
+            <video id="video" class="content" onloadstart="this.volume=0.0" autoplay muted loop preload="none"></video>
+        </div>
     </div>
 </form>
 {% endblock %}

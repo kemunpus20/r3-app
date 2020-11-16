@@ -5,7 +5,7 @@ body {
     color: #F0F4F8;
     background: #102A43;
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 div.header {
@@ -85,19 +85,21 @@ td {
 }
 
 input {
+    box-sizing: border-box;
     height: 2rem;
     width: 100%;
-    box-sizing: border-box;
 }
 
 select {
+    box-sizing: border-box;
     height: 2rem;
     width: 100%;
 }
 
 textarea {
-    width: 100%;
     box-sizing: border-box;
+    resize: none;
+    width: 100%;
 }
 
 div.button {
@@ -143,25 +145,44 @@ div.prompt {
     background-color: #F0F4F8;
 }
 
-button.finish {
-    height: 2.4rem;
+div.finish {
     display: inline;
 }
 
+button.finish {
+    height: 2.4rem;
+}
+
+div.pane {
+    height: 80vh;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    background-color: black;
+}
+
 div.container {
-    display: block;
+    flex-basis: 100%;
+}
+
+div.comment {
+    display: none;
+    flex-basis: 50%;
+}
+
+textarea.comment {
+    height: 80vh;
 }
 
 div.content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: none;
+    text-align: center;
     font-size: xx-large;
 }
 
 img.content,
 video.content {
+    display: none;
     object-fit: contain;
     width: 100%;
     height: 80vh;
@@ -210,6 +231,6 @@ video.content {
     video.content {
         object-fit: cover;
         width: 100%;
-        height: 70vh;
+        height: 100%;
     }
 }

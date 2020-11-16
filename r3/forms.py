@@ -30,6 +30,18 @@ class MainForm(forms.ModelForm):
         return nickname
 
 
+class StartForm(forms.ModelForm):
+    class Meta:
+        model = Trial
+        fields = ("comment",)
+
+
+class PlayhForm(forms.ModelForm):
+    class Meta:
+        model = Trial
+        fields = ("comment",)
+
+
 class FinishForm(forms.ModelForm):
     class Meta:
         model = Trial

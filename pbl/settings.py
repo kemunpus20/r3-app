@@ -85,7 +85,19 @@ WSGI_APPLICATION = "pbl.wsgi.application"
 
 DB_ENGINE = os.getenv("DB_ENGINE", "SQLITE")
 
-if DB_ENGINE == "AZURE_COSMOS":
+if DB_ENGINE == "POSTGRESQL":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": os.getenv("DB_NAME"),
+            "USER": os.getenv("DB_USER"),
+            "PASSWORD": os.getenv("DB_PASSWORD"),
+            "HOST": os.getenv("DB_HOST"),
+            "PORT": os.getenv("DB_PORT"),
+            "OPTIONS": {"sslmode": "require"},
+        }
+    }
+elif DB_ENGINE == "MONGODB":
     DATABASES = {
         "default": {
             "ENGINE": "djongo",
@@ -99,18 +111,6 @@ if DB_ENGINE == "AZURE_COSMOS":
                 "ssl": True,
                 "retryWrites": False,
             },
-        }
-    }
-elif DB_ENGINE == "POSTGRESQL":
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": os.getenv("DB_NAME"),
-            "USER": os.getenv("DB_USER"),
-            "PASSWORD": os.getenv("DB_PASSWORD"),
-            "HOST": os.getenv("DB_HOST"),
-            "PORT": os.getenv("DB_PORT"),
-            "OPTIONS": {"sslmode": "require"},
         }
     }
 else:
