@@ -60,7 +60,7 @@ IMPLEMENT_CHOICES = {
     ("media", "Media : Image and/or Video"),
 }
 
-ORDER_CHOICES = {
+MEDIA_ORDER_CHOICES = {
     ("shuffle", "Shuffle : Randomly"),
     ("id", "Id : By system generated ID"),
 }
@@ -123,10 +123,10 @@ class Logic(models.Model):
         help_text="Optional data that depends on each implementation.",
     )
 
-    order = models.CharField(
+    media_order = models.CharField(
         blank=False,
         max_length=10,
-        choices=ORDER_CHOICES,
+        choices=MEDIA_ORDER_CHOICES,
         default="shuffle",
         help_text="Displaying order of media data participants see.",
     )

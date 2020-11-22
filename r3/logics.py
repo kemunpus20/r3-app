@@ -160,7 +160,7 @@ def media_prep(logic):
                 media_list.append(media.id)
 
     # shuffleが指定されていれば結果のリストをシャッフルします.
-    if logic.order == "shuffle":
+    if logic.media_order == "shuffle":
         random.shuffle(media_list)
 
     # リストを空白区切りの文字列に展開します.
@@ -262,7 +262,7 @@ def text_prep(logic):
     index_list = list(range(len(text_list)))
 
     # インデックスをシャッフルします.
-    if logic.order == "shuffle":
+    if logic.media_order == "shuffle":
         random.shuffle(index_list)
 
     # リストに書き込む最大数を計算します.
