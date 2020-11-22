@@ -26,7 +26,7 @@ Now you can acccess http://localhost:8000 to get application main screen and htt
 ### Setup data for your test drive
 To prepare minimam data, follow below steps in the administration application.
  1. Add your several media files (should be jpg or mp4) using "Media" menu.
- 1. Create your own experiment logic using "Logic" menu. Be sure that "logic=media" might be in the param field.
+ 1. Create your own experiment logic using "Logic" menu.
  1. "Prep" your logic using "Prep selected logics" menu in the Logic list. This operation assigns relavant media files to the logic.
  1. Launch main application with http://localhost:8000 and try to start your experiment using the logic you created.
 

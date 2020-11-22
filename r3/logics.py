@@ -12,17 +12,14 @@ from .models import MAX_MEDIA_COUNT, Media, Temp
 def prep(logic):
     """Logicの準備をします.
 
-    paramの中で指定されている情報に基づいて個別のprep実装を呼び出します.
+    implementで指定されている情報に基づいて個別のprep実装を呼び出します.
 
     Args:
         logic (Logic): 対象となるLogicのインスタンス.
 
     Raises:
-        Http404: paramに処理可能なLogicの名前がない場合.
+        Http404: implementに処理可能なLogicの名前がない場合.
     """
-
-    # パラメータを分解して保持します.
-    param_list = logic.param.split()
 
     # 結果のリストを空にしておきます.
     logic.media_list = ""
@@ -32,12 +29,15 @@ def prep(logic):
     # 一回保存しておきます.
     logic.save()
 
-    # paramで指定されている実装を呼び出します.
-    if "logic=media" in param_list:
-        media_prep(logic, param_list)
+    # logicで指定されている実装を呼び出します.
+    if logic.implement == "media":
+        media_prep(logic)
 
-    elif "logic=text" in param_list:
-        text_prep(logic, param_list)
+    elif logic.implement == "text":
+        text_prep(logic)
+
+    elif logic.implement == "blank":
+        blank_prep(logic)
 
     else:
         # 知らないLogicの名前が指定されたらエラーです.
@@ -50,7 +50,7 @@ def prep(logic):
 def get_content(trial, seq):
     """表示するデータを決定します.
 
-    paramの中で指定されている情報に基づいて個別のget_content実装を呼び出します.
+    implementで指定されている情報に基づいて個別のget_content実装を呼び出します.
 
     Args:
         trial (Trial): 実行中のTrialのインスタンス.
@@ -66,15 +66,15 @@ def get_content(trial, seq):
     # Trialに結び付けられているLogicを取得します.
     logic = trial.logic
 
-    # Logicのparamを取り出します.
-    param_list = logic.param.split()
+    # 指定されているget_contentを呼びだします.
+    if logic.implement == "media":
+        return media_get_content(trial, seq)
 
-    # paramで指定されているget_contentを呼びだします.
-    if "logic=media" in param_list:
-        return media_get_content(trial, seq, param_list)
+    elif logic.implement == "text":
+        return text_get_content(trial, seq)
 
-    elif "logic=text" in param_list:
-        return text_get_content(trial, seq, param_list)
+    elif logic.implement == "blank":
+        return blank_get_content(trial, seq)
 
     # 知らないLogicの名前が指定されたらエラーです.
     raise Http404
@@ -95,14 +95,13 @@ def add_state(logic, message):
     logic.save()
 
 
-def media_prep(logic, param_list):
+def media_prep(logic):
     """Mediaを処理するLogicを準備します.
 
     指定された条件に合致するMediaを選択して保存しておきます.
 
     Args:
         logic (Logic): 対象となるLogicのインスタンス.
-        param_list (list): パラメータのリスト.
     """
 
     # 実行開始の情報をstateに書いておきます.
@@ -160,8 +159,8 @@ def media_prep(logic, param_list):
                 # 結果リストに追記します.
                 media_list.append(media.id)
 
-    # Logicのparamにshuffleが指定されていれば結果のリストをシャッフルします.
-    if "shuffle" in param_list:
+    # shuffleが指定されていれば結果のリストをシャッフルします.
+    if logic.order == "shuffle":
         random.shuffle(media_list)
 
     # リストを空白区切りの文字列に展開します.
@@ -177,7 +176,7 @@ def media_prep(logic, param_list):
     add_state(logic, "media_prep finished.")
 
 
-def media_get_content(trial, seq, param_list):
+def media_get_content(trial, seq):
     """media_prep()で準備された結果に基づいて表示すべきMediaを決定します.
 
     指定された連番に合致するMediaを返却します.
@@ -185,7 +184,6 @@ def media_get_content(trial, seq, param_list):
     Args:
         logic (Logic): 対象となるLogicのインスタンス.
         seq (int): 要求しているメディアの連番.
-        param_list (list): パラメータのリスト.
 
     Raises:
         Http404: 該当するMediaが見つからなかった場合.
@@ -221,20 +219,24 @@ def media_get_content(trial, seq, param_list):
 TEXT_LOGIC_NAME = "text-logic-cache:{}"
 
 
-def text_prep(logic, param_list):
+def text_prep(logic):
     """テキストを表示するLogicを準備します.
 
     texts.py で静的に定義されたテキストの配列を準備します.
 
     Args:
         logic (Logic): 対象となるLogicのインスタンス.
-        param_list (list): パラメータのリスト.
     """
 
+    # 実行開始の情報をstateに書いておきます.
     add_state(logic, "text_prep started.")
 
     # テキストリストをクリアします.
     text_list = []
+
+    # 表示対象として指定されているタグのリストを取得します.
+    tag_list = logic.media_tag.split()
+    logic.media_tag = " ".join(map(str, tag_list))
 
     # 対象となるMediaをすべて取得します.
     media_all = Media.objects.all()
@@ -245,17 +247,22 @@ def text_prep(logic, param_list):
         # 拡張子をチェックします.
         if media.ext == "txt":
 
-            # 拡張子がtxtなら読み込んでテキストのリストに追記します.
-            with media.content.open(mode="rb") as text_file:
-                lines = text_file.read().decode("utf-8").splitlines()
-                text_file.close()
-                text_list.extend(lines)
+            # タグがリストに含まれているかを確認します.
+            media_tag_list = media.tag.split()
+
+            if not set(media_tag_list).isdisjoint(tag_list):
+
+                # 読み込んでテキストのリストに追記します.
+                with media.content.open(mode="rb") as text_file:
+                    lines = text_file.read().decode("utf-8").splitlines()
+                    text_file.close()
+                    text_list.extend(lines)
 
     # インデックスを保持するリストを作成します.
     index_list = list(range(len(text_list)))
 
     # インデックスをシャッフルします.
-    if "shuffle" in param_list:
+    if logic.order == "shuffle":
         random.shuffle(index_list)
 
     # リストに書き込む最大数を計算します.
@@ -292,7 +299,7 @@ def text_prep(logic, param_list):
     add_state(logic, "text_prep finished.")
 
 
-def text_get_content(trial, seq, param_list):
+def text_get_content(trial, seq):
     """text_prep()で準備された結果に基づいて表示すべきテキストを決定します.
 
     指定された連番に対応するテキストを返却します.
@@ -300,7 +307,6 @@ def text_get_content(trial, seq, param_list):
     Args:
         logic (Logic): 対象となるLogicのインスタンス.
         seq (int): 要求しているメディアの連番.
-        param_list (list): パラメータのリスト.
 
     Raises:
         Http404: 該当するテキストが見つからなかった場合.
@@ -330,3 +336,38 @@ def text_get_content(trial, seq, param_list):
 
     # jsonを返します.
     return json.dumps({"type": "txt", "data": text})
+
+
+def blank_prep(logic):
+    """何も表示しないLogicを準備します.
+
+    Args:
+        logic (Logic): 対象となるLogicのインスタンス.
+    """
+
+    # 実行開始の情報をstateに書いておきます.
+    add_state(logic, "blank_prep started.")
+
+    pass
+
+    # 実行終了の情報をstateに書いておきます.
+    add_state(logic, "blank_prep finished.")
+
+
+def blank_get_content(trial, seq):
+    """何も表示しません.
+
+    常に何も表示しないという情報を返却します.
+
+    Args:
+        logic (Logic): 対象となるLogicのインスタンス.
+        seq (int): 要求しているメディアの連番.
+
+    Raises:
+        Http404: 該当するテキストが見つからなかった場合.
+
+    Returns:
+        (Json) メディアの型(TXT)とデータ(テキスト)が示されたJsonデータ.
+    """
+
+    return json.dumps({"type": "txt", "data": "(blank)"})

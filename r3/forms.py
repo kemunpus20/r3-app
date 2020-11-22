@@ -10,7 +10,7 @@ from .models import Trial
 class MainForm(forms.ModelForm):
     class Meta:
         model = Trial
-        fields = ("room", "nickname", "logic", "keyword")
+        fields = ("room", "nickname", "logic")
 
     def clean_room(self):
         room = str(self.cleaned_data.get("room")).strip()

@@ -1,4 +1,17 @@
 {% extends "base.html" %}
+<!-- Head -->
+{% block head %}
+<script type="text/javascript">
+    window.onload = () => {
+
+        if ("{{trial.logic.commenting}}" == "parallel") {
+            const comment = document.getElementById("id_comment");
+            comment.readOnly = true;
+            comment.disabled = true;
+        }
+    }
+</script>
+{% endblock %}
 <!-- Header-->
 {% block header %}
 <div class="header">

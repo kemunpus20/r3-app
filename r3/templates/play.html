@@ -39,8 +39,12 @@
         last = start - interval;
         timer = setInterval(onInterval, 1000 / 2);
 
-        if ("{{trial.logic.param}}".indexOf("comment=inline") != -1) {
+        if ("{{trial.logic.commenting}}" == "parallel") {
             document.getElementById("comment").style.display = "block";
+        }
+
+        if (duration == 0) {
+            document.getElementById("finish").style.display = "inline";
         }
 
         onInterval();
@@ -146,11 +150,14 @@
         </div>
     </div>
     <div class="finish">
-        <button class="finish" type="submit">Finish</button>
+        <button id="finish" class="finish" type="submit">Finish</button>
+    </div>
+    <div class="subject">
+        {{trial.logic.subject}}
     </div>
     <div class="pane">
         <div id="comment" class="comment">
-            <textarea class="comment" name="comment" maxlength="1000" id="id_comment" placeholder="Comment : Enter your ideas here"></textarea>
+            <textarea class="comment" name="comment" maxlength="1000" id="id_comment" placeholder="Enter your ideas here!"></textarea>
         </div>
         <div id="container" class="container">
             <div id="text" class="content"></div>

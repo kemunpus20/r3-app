@@ -3,6 +3,15 @@
 {% block head %}
 <script type="text/javascript">
     window.onload = () => {
+        const isIE = /*@cc_on!@*/ false || !!document.documentMode;
+
+        if (isIE) {
+            alert("Sorry, your browser is not suppiorted...");
+            window.location = "static/tutorial.html"
+
+            return;
+        }
+
         let select = document.getElementById('id_logic');
         let map = new Map();
         let null_text = null;

@@ -9,13 +9,20 @@ body {
 
 h1 {
     margin: 0;
-    padding: 1rem 2rem 1rem 2rem;
+    padding: 1rem 2rem 0 2rem;
     color: #F0F4F8;
     background-color: #334268;
 }
 
 h3 {
     margin-left: 1em;
+}
+
+div.lang {
+    padding: 0 1rem 1rem 0;
+    color: #F0F4F8;
+    background-color: #334268;
+    text-align: right;
 }
 
 div.body {
