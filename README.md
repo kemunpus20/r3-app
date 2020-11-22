@@ -1,7 +1,7 @@
 # R3
 Simple web-based system to support various internal hypothetical-based experiments to improve people's creativity.
 
-![screenshot](doc/screenshot-play.png)
+![screenshot](doc/screenshot.png)
 
 ## Getting started
 - To host of experiment, Please read this document to develop and/or deploy this system in your own environment.

@@ -2,10 +2,9 @@
 <!-- Head -->
 {% block head %}
 <script type="text/javascript">
-    window.onload = () => {
-        const isIE = window.navigator.userAgent.match(/MSIE|Trident/) !== null;
+    window.onload = new function() {
 
-        if (isIE) {
+        if ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true)) {
             alert("Sorry, your browser is not suppiorted...");
             window.location = "static/tutorial.html"
 
