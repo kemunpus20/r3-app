@@ -2,7 +2,7 @@
 <!-- Head -->
 {% block head %}
 <script type="text/javascript">
-    window.onload = new function() {
+    window.onload = function() {
 
         if ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true)) {
             alert("Sorry, your browser is not suppiorted...");
@@ -12,29 +12,19 @@
         }
 
         let select = document.getElementById('id_logic');
-        let map = new Map();
-        let null_text = null;
+        let tmp = new Array();
 
         for (let i = 0; i < select.length; i++) {
-
-            if (select.options[i].value) {
-                map.set(select.options[i].text, select.options[i].value);
-
-            } else {
-                null_text = select.options[i].text;
-            }
+            tmp[i] = new Array();
+            tmp[i][0] = select.options[i].text;
+            tmp[i][1] = select.options[i].value;
         }
 
-        let sorted = new Map([...map.entries()].sort());
+        tmp.sort();
 
-        select.options[0].text = null_text;
-        select.options[0].value = null;
-        let index = 1;
-
-        for (let [key, value] of sorted) {
-            select.options[index].text = key;
-            select.options[index].value = value;
-            index++;
+        for (let i = 0; i < tmp.length; i++) {
+            select.options[i].text = tmp[i][0];
+            select.options[i].value = tmp[i][1];
         }
     }
 </script>
