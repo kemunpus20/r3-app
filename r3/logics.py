@@ -370,4 +370,4 @@ def blank_get_content(trial, seq):
         (Json) メディアの型(TXT)とデータ(テキスト)が示されたJsonデータ.
     """
 
-    return json.dumps({"type": "txt", "data": "(blank)"})
+    return json.dumps({"type": "txt", "data": ""})

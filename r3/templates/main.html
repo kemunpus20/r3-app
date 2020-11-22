@@ -3,7 +3,7 @@
 {% block head %}
 <script type="text/javascript">
     window.onload = () => {
-        const isIE = /*@cc_on!@*/ false || !!document.documentMode;
+        const isIE = window.navigator.userAgent.match(/MSIE|Trident/) !== null;
 
         if (isIE) {
             alert("Sorry, your browser is not suppiorted...");
