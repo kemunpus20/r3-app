@@ -18,7 +18,6 @@ $ pip instll -r requirements.txt
 $ ./manage.py check
 $ ./manage.py makemigrations
 $ ./manage.py migrate
-$ ./manage.py createcachetable
 $ ./manage.py runserver
 ```
 Now you can acccess http://localhost:8000 to get application main screen and http://localhost:8000/manager to open Django built-in administration application with superuser regstered in above step. Be sure that path to administration screen has been changed from default value "admin" to "manahger" for security reason. And also you can use `gunicorn --bind:0.0.0.0:8000 pbl.wsgi` instead of `manage.py runserver` as similar to the production environment.
