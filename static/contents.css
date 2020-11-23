@@ -62,6 +62,14 @@ div.sub-message {
     font-size: medium;
 }
 
+div.contact {
+    border-style: solid;
+    border-color: #F0F4F8;
+    border-width: 0.1rem;
+    padding: 1rem;
+    background-color: #334268;
+}
+
 @media screen and (max-width: 480px) {
     body {
         font-size: small;
