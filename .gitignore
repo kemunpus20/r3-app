@@ -133,3 +133,7 @@ dmypy.json
 
 # azure
 .azure
+
+# vscode
+.vscode/
+
