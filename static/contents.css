@@ -50,18 +50,6 @@ button {
     border-color: #627D98;
 }
 
-div.main-message {
-    margin: 2em 0 2em 0;
-    text-align: center;
-    font-size: x-large;
-}
-
-div.sub-message {
-    margin-bottom: 4em;
-    text-align: center;
-    font-size: medium;
-}
-
 div.contact {
     border-style: solid;
     border-color: #F0F4F8;
@@ -80,6 +68,6 @@ div.contact {
     }
     div.body {
         margin: 1rem;
-        line-height: 1rem;
+        line-height: 1.5rem;
     }
 }

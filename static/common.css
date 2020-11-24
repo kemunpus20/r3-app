@@ -141,8 +141,9 @@ div.prompt {
     padding: 1rem;
     font-size: medium;
     line-height: 2rem;
-    color: #243B53;
-    background-color: #F0F4F8;
+    background-color: #243B53;
+    color: #F0F4F8;
+    border: solid 0.1rem #627D98;
 }
 
 div.finish {
@@ -235,6 +236,19 @@ video.content {
     }
     button.finish {
         width: 100%;
+    }
+    div.pane {
+        height: 80vh;
+        display: block;
+        align-items: center;
+        background-color: #102A43;
+    }
+    textarea.comment {
+        border-width: 0;
+        height: 20vh;
+    }
+    div.content {
+        margin-top: 2rem;
     }
     img.content,
     video.content {
