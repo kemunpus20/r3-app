@@ -54,7 +54,7 @@ div.contact {
     border-style: solid;
     border-color: #F0F4F8;
     border-width: 0.1rem;
-    padding: 1rem;
+    padding: 0.5rem;
     background-color: #334268;
 }
 
@@ -69,5 +69,14 @@ div.contact {
     div.body {
         margin: 1rem;
         line-height: 1.5rem;
+    }
+    div.contact {
+        width: fit-content;
+    }
+    span.contact {
+        display: block;
+    }
+    br.contact {
+        display: none;
     }
 }
