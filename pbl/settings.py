@@ -97,6 +97,7 @@ if DB_ENGINE == "POSTGRESQL":
             "OPTIONS": {"sslmode": "require"},
         }
     }
+
 elif DB_ENGINE == "MONGODB":
     DATABASES = {
         "default": {
@@ -113,6 +114,7 @@ elif DB_ENGINE == "MONGODB":
             },
         }
     }
+
 else:
     DATABASES = {
         "default": {
@@ -155,6 +157,7 @@ if MEDIA_STORAGE == "AZURE_BLOB":
     AZURE_MEDIA_CONTAINER = os.environ.get("AZURE_MEDIA_CONTAINER")
     AZURE_CUSTOM_DOMAIN = os.environ.get("AZURE_CUSTOM_DOMAIN")
     MEDIA_URL = f"https://{AZURE_CUSTOM_DOMAIN}/{AZURE_MEDIA_CONTAINER}/"
+
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
     MEDIA_URL = "/media/"
@@ -162,10 +165,10 @@ else:
 # Security.
 
 if not DEBUG:
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_SSL_REDIRECT = False
+    # SECURE_HSTS_SECONDS = 31536000
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # SECURE_HSTS_PRELOAD = True
+    # SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
