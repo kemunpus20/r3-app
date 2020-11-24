@@ -3,6 +3,8 @@ Simple web-based system to support various internal hypothetical-based experimen
 
 ![screenshot](doc/screenshot.png)
 
+See also [R3-demo video](doc/R3-demo.mp4).
+
 ## Getting started
 - To host of experiment, Please read this document to develop and/or deploy this system in your own environment.
 - Pull requests, feature ideas and bug reports are very welcome.
