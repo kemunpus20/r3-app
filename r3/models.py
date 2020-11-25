@@ -1,14 +1,9 @@
-""" Models """
-
 import uuid
 
 from django.core.exceptions import ValidationError
 from django.db import models
 
-MAX_MEDIA_COUNT = 100
-MAX_MEDIA_LIST_SIZE = len("2147483647 ") * MAX_MEDIA_COUNT
 MAX_MEDIA_FILE_SIZE_LIMIT = 30 * (1024 * 1024)
-MAX_TEMP_CONTENT_SIZE = 1024 * 1
 
 
 def media_filename(_, filename):
@@ -18,7 +13,6 @@ def media_filename(_, filename):
 def media_validator(file):
 
     if file.size > MAX_MEDIA_FILE_SIZE_LIMIT:
-
         raise ValidationError(
             "File too large. Size should not exceed {} MB.".format(
                 MAX_MEDIA_FILE_SIZE_LIMIT / (1024 * 1024)
@@ -50,6 +44,9 @@ class Media(models.Model):
         help_text="Add some content-related tags separated by single space.",
     )
 
+
+MAX_MEDIA_COUNT = 100
+MAX_MEDIA_LIST_SIZE = len("2147483647 ") * MAX_MEDIA_COUNT
 
 IMPLEMENT_CHOICES = {
     ("blank", "Blank : Nothing to show"),
@@ -180,6 +177,9 @@ class Trial(models.Model):
     nickname = models.CharField(blank=True, max_length=20)
     keyword = models.CharField(blank=True, max_length=1000)  # Cecum
     comment = models.TextField(blank=True, max_length=1000)
+
+
+MAX_TEMP_CONTENT_SIZE = 1024 * 1
 
 
 class Temp(models.Model):

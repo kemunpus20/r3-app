@@ -1,5 +1,3 @@
-""" Forms """
-
 import random
 
 from django import forms

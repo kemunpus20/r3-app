@@ -1,5 +1,3 @@
-""" Admin """
-
 import django
 from django.contrib import admin, messages
 from import_export import resources

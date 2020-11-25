@@ -1,5 +1,3 @@
-""" Backend """
-
 from django.conf import settings
 from storages.backends.azure_storage import AzureStorage
 

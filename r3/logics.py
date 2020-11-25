@@ -1,5 +1,3 @@
-""" Logics """
-
 import datetime
 import json
 import random
