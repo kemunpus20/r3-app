@@ -6,11 +6,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 MAX_MEDIA_COUNT = 100
-
 MAX_MEDIA_LIST_SIZE = len("2147483647 ") * MAX_MEDIA_COUNT
-
 MAX_MEDIA_FILE_SIZE_LIMIT = 30 * (1024 * 1024)
-
 MAX_TEMP_CONTENT_SIZE = 1024 * 1
 
 
@@ -177,23 +174,15 @@ class Logic(models.Model):
 
 class Trial(models.Model):
     started = models.DateTimeField(auto_now_add=True)
-
     finished = models.DateTimeField(auto_now=True)
-
     room = models.CharField(blank=False, max_length=20)
-
     logic = models.ForeignKey("Logic", on_delete=models.PROTECT)
-
     nickname = models.CharField(blank=True, max_length=20)
-
-    keyword = models.CharField(blank=True, max_length=1000)
-
+    keyword = models.CharField(blank=True, max_length=1000)  # Cecum
     comment = models.TextField(blank=True, max_length=1000)
 
 
 class Temp(models.Model):
     updated = models.DateTimeField(auto_now=True)
-
     name = models.CharField(blank=False, max_length=20)
-
     content = models.TextField(blank=True, max_length=MAX_TEMP_CONTENT_SIZE)
