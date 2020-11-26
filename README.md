@@ -1,5 +1,5 @@
 # R3
-Simple web-based system to support various internal hypothetical-based experiments to improve people's creativity.
+A simple web-based system for experimenting with how external image, video, and textual information enhances a person's creativity, based on the AUT ('Alternate Uses Task' Guilford,1966) theory of evaluation.
 
 ![screenshot](doc/screenshot.png)
 
