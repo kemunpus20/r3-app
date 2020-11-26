@@ -1,5 +1,5 @@
 # R3
-A simple web-based system for experimenting with how external image, video, and textual information enhances a person's creativity, based on the AUT ('Alternate Uses Task' Guilford,1966) theory of evaluation.
+A simple web-based system for experimenting with how external image, video, and textual information enhances a person's creativity, based on the AUT ('Alternate Uses Task' Guilford,1967) theory of evaluation.
 
 ![screenshot](doc/screenshot.png)
 
@@ -39,24 +39,11 @@ To prepare minimam data, follow below steps in the administration application.
 1. User can anytime use any browser buttons like a "back" and "reload". There is no impact to the system from data consistency point of view, but it might be confused from experiment participant point of view.
 1. Experiment host has to update every Logics when new Media file has been added. At this stage, this process called "Prep" is implemented as a part of synchronous HTTP handler. So perhaps client browser will be timed-out in "Prep" process if bunch of media files registererd in the system. Data stored back-end will be updated successfully even if client is timed-out. So I think this is not a critical issue at the moment.
 
-## To-do and ideas list
-I will try to handle following issues if I have a time...
-1. Isolate "Prep" task from Django main thread to supports more complecated and time-consuming algorithms in the logic module. Using [django-background-tasks](https://django-background-tasks.readthedocs.io/) could be a solution. may be a custom startup script for production environment also needed, and then "Prep" might be start automatically.
-1. Obviously current design of Logic.media_list is neither safety nor scalable. So to reconsider data relationship between Logic and Trial once again.
-1. To add more logger for trouble shooting in production environment.
-1. To add more comments based on the Python docstrings style.
-1. There is no test code. Yes, I understand, it's unbelievable in 2020. I have to write some tests to cover vital part of this system. And someday to concider to CI and CD if the system improved continually.
-1. To add transition effects in playback screen. I had try to add fancy effects using CSS animation features, but it was a bit complecated work for me...
-1. Should I improve the user interface using fancy UI framework like Bootstrap or Vue ? I think Plain HTML5 and CSS might be enough for me at this stage...
-1. Adding favicon and cool logo if somebody donated to me.
-
-### Tips for Python / Django developer
-1. To writing reliable Python code, [flake8](https://pypi.org/project/flake8/), [isort](https://pypi.org/project/isort/), and [black](https://github.com/psf/black) would be great tool. Not only for the IDE integration but also as an independent tool. See also [pep8](https://pep8.readthedocs.io/).
-1. To checking current version of installed python modules, use ```pip list --outdated```.
-
 ## References
 Many thanks to all of authors.
  - [Django on Azure - beyond "hello world"](https://tonybaloney.github.io/posts/django-on-azure-beyond-hello-world.html)
  - [Tutorial: Deploy a Django web app with PostgreSQL using the Azure portal](https://docs.microsoft.com/ja-jp/azure/developer/python/tutorial-python-postgresql-app-portal)
  - [DjangoにPostgreSQLを適用する](https://qiita.com/shigechioyo/items/9b5a03ceead6e5ec87ec)
  
+ ## Note
+See my personal [note](doc/NOTE.md) if you are interested. 

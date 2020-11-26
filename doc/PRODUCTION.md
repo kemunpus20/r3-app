@@ -140,8 +140,3 @@ Note: Finally I have decided to use the PostgreSQL running on a very small linux
     # ./manage.py createsuperuser
     ```
 1. Change Debug to False and restart the service.
-
-## Note
-1. To improve system overall performance, use smart cache mechanism in both Django and Azure.
-1. Using Azure Private VNET would be better for security.
-1. To confirm Django application settings, `manage.py check --deploy` will provides some security related information.
